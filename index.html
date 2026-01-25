@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Save Yaroslav Lomakov</title>
+
+<style>
+body {
+    margin: 0;
+    padding: 40px 0;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #f0f0f0;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background:
+        linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)),
+        url("background.jpg") center / cover no-repeat;
+    filter: blur(8px);
+    transform: scale(1.06);
+    z-index: -1;
+}
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 30px;
+    background: rgba(0,0,0,0.65);
+    border-radius: 14px;
+    box-shadow: 0 25px 70px rgba(0,0,0,0.8);
+}
+
+.title {
+    font-family: Impact, Arial Black, sans-serif;
+    font-size: 48px;
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.section-title {
+    font-family: Impact, Arial Black, sans-serif;
+    font-size: 26px;
+    margin: 40px 0 20px;
+    border-bottom: 2px solid #555;
+    padding-bottom: 6px;
+}
+
+.main-photo {
+    display: block;
+    max-width: 280px;
+    margin: 0 auto 25px;
+    border-radius: 10px;
+    border: 2px solid #777;
+}
+
+.text {
+    font-size: 16px;
+    line-height: 1.6;
+    background: rgba(0,0,0,0.45);
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px,1fr));
+    gap: 20px;
+}
+
+.gallery img {
+    width: 100%;
+    border-radius: 8px;
+    border: 1px solid #555;
+}
+
+.gallery p {
+    font-size: 14px;
+    background: rgba(0,0,0,0.45);
+    padding: 12px;
+    border-radius: 6px;
+}
+
+/* DONATE */
+.donate-wrapper {
+    margin-top: 60px;
+    text-align: center;
+}
+
+.donate-btn {
+    display: inline-block;
+    padding: 18px 50px;
+    font-family: Impact, Arial Black, sans-serif;
+    font-size: 32px;
+    color: #fff;
+    text-decoration: none;
+    background: linear-gradient(135deg, #b30000, #ff0000);
+    border-radius: 50px;
+    box-shadow: 0 0 30px rgba(255,0,0,0.6);
+}
+
+/* ===== СПОНСОРЫ ===== */
+
+.sponsor-panel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 320px;
+    height: 100%;
+    background: rgba(0,0,0,0.95);
+    padding: 25px;
+    overflow-y: auto;
+    transform: translateX(100%);
+    transition: transform .4s ease;
+    z-index: 6;
+}
+
+.sponsor-panel.open {
+    transform: translateX(0);
+}
+
+.sponsor-btn {
+    position: fixed;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+    padding: 14px 22px;
+    font-family: Impact, Arial Black, sans-serif;
+    font-size: 20px;
+    background: linear-gradient(135deg, #333, #000);
+    border-radius: 30px;
+    cursor: pointer;
+    box-shadow: 0 0 20px rgba(255,255,255,0.15);
+    z-index: 7;
+    transition: transform .4s ease;
+}
+
+/* кнопка уезжает вместе с панелью, но с зазором */
+.sponsor-btn.move {
+    transform: translate(-360px, -50%);
+}
+
+.sponsor {
+    margin-bottom: 30px;
+}
+
+.sponsor img {
+    width: 100%;
+    border-radius: 8px;
+    border: 1px solid #555;
+    margin-bottom: 10px;
+}
+
+.sponsor-name {
+    font-family: Impact, Arial Black, sans-serif;
+    font-size: 18px;
+    margin-bottom: 6px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="title">SAVE YAROSLAV LOMAKOV</div>
+
+<img src="photo.jpg" class="main-photo">
+
+<div class="text">
+Ярослав Ломаков — обычный парень, которому сейчас особенно важна поддержка.
+Этот сайт создан, чтобы показать: он не один.
+</div>
+
+<div class="section-title">ФОТО</div>
+<div class="gallery">
+    <img src="photo1.jpg">
+    <img src="photo2.jpg">
+    <img src="photo3.jpg">
+    <img src="photo4.jpg">
+</div>
+
+<div class="section-title">ДРУЗЬЯ О ЯРОСЛАВЕ</div>
+<div class="gallery">
+
+    <div>
+        <img src="ivan.jpg">
+        <p><strong>Иван Зоуви</strong><br>Всегда рядом в трудные моменты.</p>
+    </div>
+
+    <div>
+        <img src="slava.jpg">
+        <p><strong>Слава Мирвел</strong><br>Поддержка без лишних слов.</p>
+    </div>
+
+    <div>
+        <img src="adel.jpg">
+        <p><strong>Адель Скалка</strong><br>Умеет поддержать и сказать нужные слова.</p>
+    </div>
+
+    <div>
+        <img src="sergey.jpg">
+        <p><strong>СерГей</strong><br>Надёжный человек, который не бросает своих.</p>
+    </div>
+
+</div>
+
+<div class="donate-wrapper">
+    <a class="donate-btn" href="https://t.me/mirveel" target="_blank">DONATE</a>
+    <p style="opacity:.8;margin-top:15px;">Помочь Ярославу напрямую</p>
+</div>
+
+</div>
+
+<!-- ПАНЕЛЬ СПОНСОРОВ -->
+<div class="sponsor-panel" id="sponsors">
+    <div class="section-title">СПОНСОРЫ</div>
+
+    <div class="sponsor">
+        <img src="sponsor1.jpg">
+        <div class="sponsor-name">Глеб СасалВрот</div>
+        <p>Поддержал проект без лишних вопросов.</p>
+        <p><strong>Донат:</strong> $420</p>
+    </div>
+
+    <div class="sponsor">
+        <img src="sponsor2.jpg">
+        <div class="sponsor-name">Джефри Эпштейнович</div>
+        <p>Анонимный меценат с иронией и стилем.</p>
+        <p><strong>Донат:</strong> $666</p>
+    </div>
+
+    <div class="sponsor">
+        <img src="sponsor3.jpg">
+        <div class="sponsor-name">Володимир Зеленский</div>
+        <p>Жест солидарности и человеческой поддержки.</p>
+        <p><strong>Донат:</strong> $1337</p>
+    </div>
+</div>
+
+<div class="sponsor-btn" id="sponsorBtn">СПОНСОРЫ</div>
+
+<script>
+const panel = document.getElementById("sponsors");
+const btn = document.getElementById("sponsorBtn");
+
+btn.addEventListener("click", () => {
+    panel.classList.toggle("open");
+    btn.classList.toggle("move");
+});
+</script>
+
+</body>
+</html>
+
