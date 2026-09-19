@@ -100,6 +100,15 @@
             animation-play-state: paused;
             transform: scaleY(0.15);
         }
+
+        /* MIRVEL custom design layer */
+        body.mirvel-soft .glass-card { border-radius: 1.15rem; }
+        body.mirvel-sharp .glass-card { border-radius: .8rem; }
+        body.mirvel-glow .glass-card { box-shadow: 0 0 28px var(--accent-glow, rgba(0,240,255,.10)); }
+        body.mirvel-minimal { background-image: radial-gradient(circle at 50% 0%, var(--accent-glow, rgba(0,240,255,.08)), transparent 45%); }
+        .avatar-ring { position: absolute; inset: -6px; border-radius: 9999px; border: 1px dashed var(--accent-color); opacity: .55; animation: avatarSpin 16s linear infinite; pointer-events:none; }
+        @keyframes avatarSpin { to { transform: rotate(360deg); } }
+        .admin-only-hidden { display: none !important; }
     </style>
 </head>
 <body class="min-h-screen py-8 px-4 sm:px-6 flex flex-col justify-between items-center relative overflow-x-hidden">
@@ -140,6 +149,7 @@
             <div class="absolute top-0 left-0 w-full h-1.5 accent-bg"></div>
             
             <div class="relative w-28 h-28 mx-auto mb-4">
+                <div class="avatar-ring"></div>
                 <div class="absolute inset-0 rounded-full accent-bg blur-md opacity-50 group-hover:opacity-80 transition-opacity"></div>
                 <img id="viewAvatar" src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=300&auto=format&fit=crop&q=80" 
                      alt="MIRVEL Аватар" 
@@ -222,7 +232,7 @@
                     </h2>
                 </div>
                 
-                <div class="flex items-center space-x-2">
+                <div id="collectionAdminControls" class="flex items-center space-x-2 admin-only-hidden">
                     <button onclick="openAddModal()" class="px-3 py-1.5 rounded-xl accent-bg text-black font-bold text-xs hover:opacity-90 transition-opacity flex items-center gap-1">
                         <i data-lucide="plus" class="w-4 h-4"></i>
                         <span>Добавить</span>
@@ -448,6 +458,12 @@
                 <button onclick="switchAdminTab('projects')" class="admin-tab-btn px-3 py-2 rounded-xl font-medium transition-all shrink-0 text-gray-400 hover:text-white" data-tab="projects">
                     🚀 Проекты
                 </button>
+                <button onclick="switchAdminTab('collection')" class="admin-tab-btn px-3 py-2 rounded-xl font-medium transition-all shrink-0 text-gray-400 hover:text-white" data-tab="collection">
+                    📚 Коллекция
+                </button>
+                <button onclick="switchAdminTab('design')" class="admin-tab-btn px-3 py-2 rounded-xl font-medium transition-all shrink-0 text-gray-400 hover:text-white" data-tab="design">
+                    ✨ Дизайн
+                </button>
                 <button onclick="switchAdminTab('security')" class="admin-tab-btn px-3 py-2 rounded-xl font-medium transition-all shrink-0 text-gray-400 hover:text-white" data-tab="security">
                     🔑 Безопасность
                 </button>
@@ -595,6 +611,59 @@
                     </div>
                 </div>
 
+                <!-- TAB: COLLECTION -->
+                <div id="adminTabContent_collection" class="admin-tab-content hidden space-y-4">
+                    <div class="p-4 rounded-2xl bg-brand-cyan/10 border border-brand-cyan/20">
+                        <div class="flex items-center gap-2 text-brand-cyan text-sm font-bold">
+                            <i data-lucide="shield-check" class="w-5 h-5"></i>
+                            <span>Админское управление коллекцией</span>
+                        </div>
+                        <p class="text-xs text-gray-400 mt-1">Добавление, импорт/экспорт и удаление предметов доступны только после входа в админку.</p>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <button onclick="openAddModal()" class="px-3 py-2 rounded-xl accent-bg text-black text-xs font-bold flex items-center justify-center gap-1.5">
+                            <i data-lucide="plus" class="w-4 h-4"></i> Добавить предмет
+                        </button>
+                        <button onclick="openExportModal()" class="px-3 py-2 rounded-xl bg-white/10 text-white text-xs font-bold flex items-center justify-center gap-1.5">
+                            <i data-lucide="database" class="w-4 h-4"></i> JSON / Backup
+                        </button>
+                    </div>
+                    <div class="space-y-2">
+                        <div class="text-xs font-bold text-white">Быстрый обзор</div>
+                        <div id="adminCollectionStats" class="grid grid-cols-3 gap-2"></div>
+                    </div>
+                </div>
+
+                <!-- TAB: DESIGN -->
+                <div id="adminTabContent_design" class="admin-tab-content hidden space-y-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-300 mb-1">Цвет акцента</label>
+                        <div class="flex gap-2">
+                            <input type="color" id="admAccentColor" class="w-12 h-10 rounded-xl bg-transparent border-0 cursor-pointer">
+                            <input type="text" id="admAccentHex" class="flex-1 bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-sm text-white font-mono" placeholder="#00f0ff">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-300 mb-1">Стиль карточек</label>
+                        <select id="admCardStyle" class="w-full bg-gray-900 border border-white/10 rounded-xl px-3 py-2 text-sm text-white">
+                            <option value="default">Glass — стандарт</option>
+                            <option value="soft">Soft — более округлый</option>
+                            <option value="sharp">Sharp — строгий</option>
+                            <option value="glow">Neon Glow — свечение</option>
+                            <option value="minimal">Minimal — чище фон</option>
+                        </select>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-white/5 border border-white/10">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="text-xs font-bold text-white">Анимированное кольцо аватара</div>
+                                <div class="text-[10px] text-gray-500">Вращается вокруг фото профиля</div>
+                            </div>
+                            <input id="admAvatarRing" type="checkbox" class="w-4 h-4 accent-bg">
+                        </div>
+                    </div>
+                </div>
+
                 <!-- TAB 6: SECURITY -->
                 <div id="adminTabContent_security" class="admin-tab-content hidden space-y-4 max-w-sm mx-auto py-4">
                     <div>
@@ -615,6 +684,7 @@
                 </button>
                 <div class="flex space-x-2">
                     <button onclick="closeAdminPanel()" class="px-4 py-2 rounded-xl bg-white/10 text-xs font-semibold text-gray-300 hover:bg-white/20">Закрыть</button>
+                    <button onclick="logoutAdmin()" class="px-3 py-2 rounded-xl bg-white/5 text-xs font-semibold text-gray-400 hover:text-white">Выйти</button>
                     <button onclick="saveAdminSettings()" class="px-5 py-2 rounded-xl accent-bg text-xs font-bold text-black hover:opacity-90 transition-opacity shadow-lg flex items-center gap-1">
                         <i data-lucide="save" class="w-4 h-4"></i>
                         <span>Сохранить всё</span>
@@ -816,6 +886,23 @@
 
         // Load app state from LocalStorage or initialize with defaults
         let appState = JSON.parse(localStorage.getItem('mirvel_app_data')) || INITIAL_SETTINGS;
+        let isAdminAuthenticated = false;
+
+        function requireAdmin() {
+            if (!isAdminAuthenticated) {
+                openAdminAuthModal();
+                showToast('Сначала войдите в админку', true);
+                return false;
+            }
+            return true;
+        }
+
+        function updateAdminVisibility() {
+            const controls = document.getElementById('collectionAdminControls');
+            if (controls) controls.classList.toggle('admin-only-hidden', !isAdminAuthenticated);
+            const deleteButtons = document.querySelectorAll('.collection-delete-btn');
+            deleteButtons.forEach(btn => btn.classList.toggle('admin-only-hidden', !isAdminAuthenticated));
+        }
 
         function saveAppState() {
             localStorage.setItem('mirvel_app_data', JSON.stringify(appState));
@@ -851,17 +938,26 @@
             renderProjects();
             renderCollection();
             renderFooterLinks();
+            applyCustomDesign();
             lucide.createIcons();
+            updateAdminVisibility();
         }
 
         // 1. Render Profile Details
+        function normalizeImageUrl(url) {
+            const value = String(url || '').trim();
+            const m = value.match(/^https?:\/\/github\.com\/([^/]+)\/([^/]+)\/blob\/([^/]+)\/(.+)$/);
+            if (m) return `https://raw.githubusercontent.com/${m[1]}/${m[2]}/${m[3]}/${m[4]}`;
+            return value;
+        }
+
         function renderProfile() {
             const p = appState.profile;
             document.getElementById('viewName').innerText = p.name || 'MIRVEL';
             document.getElementById('viewRole').innerText = p.role || '';
             document.getElementById('viewBio').innerHTML = (p.bio || '').replace('Парсер OLX', '<span class="accent-text font-semibold">Парсер OLX</span>');
             document.getElementById('viewStatusText').innerText = p.statusText || '';
-            document.getElementById('viewAvatar').src = p.avatar || '';
+            document.getElementById('viewAvatar').src = normalizeImageUrl(p.avatar || '');
 
             // Status Indicator Dot
             const pulse = document.getElementById('statusPulse');
@@ -883,7 +979,24 @@
 
             if (p.accentColor) {
                 document.documentElement.style.setProperty('--accent-color', p.accentColor);
+                const rgb = hexToRgba(p.accentColor, .30);
+                document.documentElement.style.setProperty('--accent-glow', rgb);
             }
+        }
+
+        function hexToRgba(hex, alpha) {
+            const h = String(hex || '#00f0ff').replace('#','');
+            const n = parseInt(h.length === 3 ? h.split('').map(x=>x+x).join('') : h, 16);
+            if (Number.isNaN(n)) return `rgba(0,240,255,${alpha})`;
+            return `rgba(${(n>>16)&255},${(n>>8)&255},${n&255},${alpha})`;
+        }
+
+        function applyCustomDesign() {
+            const p = appState.profile || {};
+            document.body.classList.remove('mirvel-soft','mirvel-sharp','mirvel-glow','mirvel-minimal');
+            if (p.cardStyle && p.cardStyle !== 'default') document.body.classList.add('mirvel-' + p.cardStyle);
+            const ring = document.querySelector('.avatar-ring');
+            if (ring) ring.style.display = p.avatarRing === false ? 'none' : 'block';
         }
 
         // 2. Render Social Links
@@ -1117,7 +1230,7 @@
                         <div class="absolute top-2 left-2 text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-md mono-font">
                             ${statusBadge}
                         </div>
-                        <button onclick="deleteCollectionItem('${item.id}')" class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 p-1.5 rounded-lg bg-black/60 text-red-400 hover:text-red-300 transition-all">
+                        <button onclick="deleteCollectionItem('${item.id}')" class="collection-delete-btn absolute top-2 right-2 opacity-0 group-hover:opacity-100 p-1.5 rounded-lg bg-black/60 text-red-400 hover:text-red-300 transition-all">
                             <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
                         </button>
                     </div>
@@ -1178,6 +1291,7 @@
         // Add Item to Collection
         function handleAddItem(e) {
             e.preventDefault();
+            if (!requireAdmin()) return;
             const newItem = {
                 id: Date.now().toString(),
                 title: document.getElementById('itemTitle').value,
@@ -1195,6 +1309,7 @@
         }
 
         function deleteCollectionItem(id) {
+            if (!requireAdmin()) return;
             appState.collection = appState.collection.filter(i => i.id !== id);
             saveAppState();
             showToast('Предмет удалён');
@@ -1271,6 +1386,7 @@
             const currentPass = appState.adminPassword || '1234';
 
             if (pass === currentPass) {
+                isAdminAuthenticated = true;
                 closeAdminAuthModal();
                 document.getElementById('adminPassInput').value = '';
                 openAdminPanel();
@@ -1322,6 +1438,13 @@
             document.getElementById('admBio').value = appState.profile.bio || '';
             document.getElementById('admStatusText').value = appState.profile.statusText || '';
             document.getElementById('admStatusType').value = appState.profile.statusType || 'online';
+            document.getElementById('admAccentColor').value = appState.profile.accentColor || '#00f0ff';
+            document.getElementById('admAccentHex').value = appState.profile.accentColor || '#00f0ff';
+            document.getElementById('admCardStyle').value = appState.profile.cardStyle || 'default';
+            document.getElementById('admAvatarRing').checked = appState.profile.avatarRing !== false;
+            document.getElementById('admAccentColor').oninput = () => document.getElementById('admAccentHex').value = document.getElementById('admAccentColor').value;
+            document.getElementById('admAccentHex').oninput = () => { if (/^#[0-9a-fA-F]{6}$/.test(document.getElementById('admAccentHex').value)) document.getElementById('admAccentColor').value = document.getElementById('admAccentHex').value; };
+            previewAdminAvatar();
 
             // Socials List
             renderAdminSocialsList();
@@ -1339,6 +1462,7 @@
 
             // Projects List
             renderAdminProjectsList();
+            renderAdminCollectionStats();
         }
 
         // Admin Socials Management
@@ -1535,14 +1659,26 @@
             showToast('Пароль админки успешно изменён!');
         }
 
+        function logoutAdmin() {
+            isAdminAuthenticated = false;
+            closeAdminPanel();
+            updateAdminVisibility();
+            showToast('Вы вышли из режима администратора');
+        }
+
         // Save All Admin Settings
         function saveAdminSettings() {
             appState.profile.name = document.getElementById('admName').value;
             appState.profile.role = document.getElementById('admRole').value;
-            appState.profile.avatar = document.getElementById('admAvatar').value;
+            appState.profile.avatar = normalizeImageUrl(document.getElementById('admAvatar').value);
             appState.profile.bio = document.getElementById('admBio').value;
             appState.profile.statusText = document.getElementById('admStatusText').value;
             appState.profile.statusType = document.getElementById('admStatusType').value;
+            appState.profile.cardStyle = document.getElementById('admCardStyle').value;
+            appState.profile.avatarRing = document.getElementById('admAvatarRing').checked;
+
+            const accentHex = document.getElementById('admAccentHex').value.trim();
+            if (/^#[0-9a-fA-F]{6}$/.test(accentHex)) appState.profile.accentColor = accentHex;
 
             appState.music.mode = document.getElementById('admMusicMode').value;
             appState.music.spotifyUrl = document.getElementById('admSpotifyUrl').value;
@@ -1615,7 +1751,36 @@
             }, 3500);
         }
 
-        function openAddModal() { document.getElementById('addModal').classList.remove('hidden'); }
+        function previewAdminAvatar() {
+            const input = document.getElementById('admAvatar');
+            const preview = document.getElementById('admAvatarPreview');
+            if (!input || !preview) return;
+            const url = normalizeImageUrl(input.value.trim());
+            if (!url) { preview.classList.add('hidden'); return; }
+            preview.src = url;
+            preview.classList.remove('hidden');
+            preview.onerror = () => preview.classList.add('hidden');
+        }
+
+        function renderAdminCollectionStats() {
+            const box = document.getElementById('adminCollectionStats');
+            if (!box) return;
+            const c = appState.collection || [];
+            const games = c.filter(x => x.category === 'games').length;
+            const owned = c.filter(x => x.status === 'owned').length;
+            const wish = c.filter(x => x.status === 'wishlist').length;
+            box.innerHTML = [
+                ['Всего', c.length, 'library'],
+                ['Игры', games, 'gamepad-2'],
+                ['Вишлист', wish, 'heart']
+            ].map(([label,val,icon]) => `<div class="rounded-xl bg-white/5 border border-white/10 p-3 text-center"><i data-lucide="${icon}" class="w-4 h-4 mx-auto accent-text mb-1"></i><div class="text-lg font-extrabold text-white">${val}</div><div class="text-[10px] text-gray-500">${label}</div></div>`).join('');
+            lucide.createIcons();
+        }
+
+        function openAddModal() {
+            if (!requireAdmin()) return;
+            document.getElementById('addModal').classList.remove('hidden');
+        }
         function closeAddModal() { document.getElementById('addModal').classList.add('hidden'); }
 
         function openAnonModal() { document.getElementById('anonModal').classList.remove('hidden'); }
