@@ -243,6 +243,21 @@
             </div>
         </div>
 
+
+        <!-- MIRVEL HUB -->
+        <section class="space-y-3">
+            <div class="flex items-center justify-between px-1">
+                <h2 class="text-xs uppercase font-bold tracking-wider text-gray-400 mono-font flex items-center gap-2"><i data-lucide="sparkles" class="w-3.5 h-3.5 accent-text"></i> MIRVEL HUB</h2>
+                <span class="text-[10px] text-gray-500 mono-font">LIVE</span>
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                <button onclick="copyProfileLink()" class="glass-card rounded-2xl p-3 text-left hover:-translate-y-0.5 transition-all"><i data-lucide="link-2" class="w-4 h-4 accent-text mb-2"></i><div class="text-xs font-bold text-white">Скопировать</div><div class="text-[10px] text-gray-500">ссылку</div></button>
+                <button onclick="scrollToSection('collection')" class="glass-card rounded-2xl p-3 text-left hover:-translate-y-0.5 transition-all"><i data-lucide="library" class="w-4 h-4 accent-text mb-2"></i><div class="text-xs font-bold text-white">Коллекция</div><div class="text-[10px] text-gray-500">посмотреть всё</div></button>
+                <button onclick="randomCollectionItem()" class="glass-card rounded-2xl p-3 text-left hover:-translate-y-0.5 transition-all"><i data-lucide="shuffle" class="w-4 h-4 accent-text mb-2"></i><div class="text-xs font-bold text-white">Random</div><div class="text-[10px] text-gray-500">случайная находка</div></button>
+                <button onclick="showSiteStats()" class="glass-card rounded-2xl p-3 text-left hover:-translate-y-0.5 transition-all"><i data-lucide="bar-chart-3" class="w-4 h-4 accent-text mb-2"></i><div class="text-xs font-bold text-white">Статистика</div><div class="text-[10px] text-gray-500">MIRVEL data</div></button>
+            </div>
+        </section>
+
         <footer class="pt-6 border-t border-white/5 text-center text-xs text-gray-500 space-y-2">
             <p>© 2026 MIRVEL • Личная карточка & Портфолио</p>
             <div id="footerLinks" class="flex items-center justify-center space-x-4 text-gray-400">
@@ -382,7 +397,7 @@
             </div>
             
             <h3 class="text-base font-bold text-white mb-1">Вход в Админку</h3>
-            <p class="text-xs text-gray-400 mb-4">Пароль по умолчанию: <code class="accent-text font-bold">1234</code></p>
+            <p class="text-xs text-gray-400 mb-4">Введите пароль администратора для продолжения</p>
 
             <form onsubmit="verifyAdminPassword(event)" class="space-y-3">
                 <input type="password" id="adminPassInput" required placeholder="Введите пароль..." class="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-sm text-center text-white focus:outline-none focus:border-brand-cyan tracking-widest">
@@ -626,6 +641,13 @@
                         <option value="steam">Steam Profile</option>
                         <option value="youtube">YouTube</option>
                         <option value="github">GitHub</option>
+                        <option value="instagram">Instagram</option>
+                        <option value="tiktok">TikTok</option>
+                        <option value="threads">Threads</option>
+                        <option value="reddit">Reddit</option>
+                        <option value="facebook">Facebook</option>
+                        <option value="linkedin">LinkedIn</option>
+                        <option value="patreon">Patreon</option>
                         <option value="discord">Discord</option>
                         <option value="kick">Kick Stream</option>
                         <option value="vk">ВКонтакте (VK)</option>
@@ -660,7 +682,7 @@
     <script>
         // Initial Default Settings Seed
         const INITIAL_SETTINGS = {
-            adminPassword: '1234',
+            adminPassword: 'mrvllol4267',
             profile: {
                 name: 'MIRVEL',
                 role: 'Разработчик ботов • Коллекционер • Геймер',
@@ -807,7 +829,14 @@
             kick: { name: 'Kick', icon: 'radio', colorBg: 'bg-green-500/10', border: 'border-green-500/20', text: 'text-green-400' },
             vk: { name: 'VKontakte', icon: 'users', colorBg: 'bg-blue-500/10', border: 'border-blue-500/20', text: 'text-blue-400' },
             twitter: { name: 'Twitter / X', icon: 'twitter', colorBg: 'bg-sky-400/10', border: 'border-sky-400/20', text: 'text-sky-300' },
-            website: { name: 'Вебсайт', icon: 'globe', colorBg: 'bg-brand-cyan/10', border: 'border-brand-cyan/20', text: 'text-brand-cyan' }
+            website: { name: 'Вебсайт', icon: 'globe', colorBg: 'bg-brand-cyan/10', border: 'border-brand-cyan/20', text: 'text-brand-cyan' },
+            instagram: { name: 'Instagram', icon: 'instagram', colorBg: 'bg-pink-500/10', border: 'border-pink-500/20', text: 'text-pink-400' },
+            tiktok: { name: 'TikTok', icon: 'music-2', colorBg: 'bg-white/10', border: 'border-white/20', text: 'text-white' },
+            threads: { name: 'Threads', icon: 'at-sign', colorBg: 'bg-white/10', border: 'border-white/20', text: 'text-white' },
+            reddit: { name: 'Reddit', icon: 'message-circle', colorBg: 'bg-orange-500/10', border: 'border-orange-500/20', text: 'text-orange-400' },
+            facebook: { name: 'Facebook', icon: 'facebook', colorBg: 'bg-blue-500/10', border: 'border-blue-500/20', text: 'text-blue-400' },
+            linkedin: { name: 'LinkedIn', icon: 'linkedin', colorBg: 'bg-sky-600/10', border: 'border-sky-600/20', text: 'text-sky-400' },
+            patreon: { name: 'Patreon', icon: 'heart', colorBg: 'bg-orange-500/10', border: 'border-orange-500/20', text: 'text-orange-400' }
         };
 
         function renderAll() {
@@ -1616,6 +1645,12 @@
         window.onload = function() {
             renderAll();
         };
+    
+        function copyProfileLink(){navigator.clipboard?.writeText(location.href.split('#')[0]).then(()=>showToast('Ссылка скопирована','check-circle-2')).catch(()=>showToast('Скопируй ссылку из адресной строки','link'));}
+        function scrollToSection(id){document.getElementById(id)?.scrollIntoView({behavior:'smooth',block:'start'});}
+        function randomCollectionItem(){const a=appState.collection||[];if(!a.length)return showToast('Коллекция пока пустая','info');const x=a[Math.floor(Math.random()*a.length)];scrollToSection('collection');showToast('🎲 '+x.title,'shuffle');}
+        function showSiteStats(){const c=appState.collection||[],s=appState.socials||[];showToast(`📊 ${c.length} предметов • ${c.filter(x=>x.status==='owned').length} в наличии • ${c.filter(x=>x.status==='wishlist').length} вишлист • ${s.length} ссылок`,'bar-chart-3');}
+        document.addEventListener('keydown',e=>{if(['INPUT','TEXTAREA','SELECT'].includes(document.activeElement?.tagName))return;if(e.key.toLowerCase()==='r')randomCollectionItem();if(e.key.toLowerCase()==='a')openAdminAuthModal();});
     </script>
 </body>
 </html>
