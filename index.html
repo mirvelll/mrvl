@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MIRVEL | Личная Визитка & Трекер Коллекции</title>
+    <title>MIRVEL | Личная Визитка & Админ-Панель</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Lucide Icons -->
@@ -19,7 +19,12 @@
                             purple: '#7000ff',
                             pink: '#ff007f',
                             green: '#00ff66',
-                            amber: '#ffaa00'
+                            amber: '#ffaa00',
+                            red: '#ff3344',
+                            twitch: '#9146FF',
+                            spotify: '#1DB954',
+                            steam: '#171a21',
+                            discord: '#5865F2'
                         }
                     }
                 }
@@ -34,19 +39,17 @@
             background-color: #090a0f;
             color: #f3f4f6;
             background-image: 
-                radial-gradient(circle at 15% 15%, rgba(0, 240, 255, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 15% 15%, var(--accent-glow, rgba(0, 240, 255, 0.12)) 0%, transparent 40%),
                 radial-gradient(circle at 85% 85%, rgba(112, 0, 255, 0.08) 0%, transparent 40%),
                 linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
             background-size: 100% 100%, 100% 100%, 30px 30px, 30px 30px;
         }
 
-        .mono-font {
-            font-family: 'JetBrains Mono', monospace;
-        }
+        .mono-font { font-family: 'JetBrains Mono', monospace; }
 
         .glass-card {
-            background: rgba(18, 20, 29, 0.75);
+            background: rgba(18, 20, 29, 0.78);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 255, 255, 0.08);
@@ -65,19 +68,10 @@
         .accent-bg { background-color: var(--accent-color); }
         .accent-border { border-color: var(--accent-color); }
 
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #090a0f;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #1f293d;
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--accent-color);
-        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #090a0f; }
+        ::-webkit-scrollbar-thumb { background: #1f293d; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--accent-color); }
 
         .eq-bar {
             height: 100%;
@@ -105,174 +99,121 @@
 </head>
 <body class="min-h-screen py-8 px-4 sm:px-6 flex flex-col justify-between items-center relative overflow-x-hidden">
 
-    <div id="bgGlow1" class="fixed -top-40 -left-40 w-96 h-96 bg-brand-cyan/10 rounded-full blur-3xl pointer-events-none"></div>
+    <!-- Background Decorative Glows -->
+    <div id="bgGlow1" class="fixed -top-40 -left-40 w-96 h-96 bg-brand-cyan/10 rounded-full blur-3xl pointer-events-none transition-colors duration-500"></div>
     <div id="bgGlow2" class="fixed -bottom-40 -right-40 w-96 h-96 bg-brand-purple/10 rounded-full blur-3xl pointer-events-none"></div>
 
     <main class="w-full max-w-xl mx-auto space-y-6 z-10">
 
+        <!-- Top Controls Bar -->
         <div class="flex items-center justify-between glass-card px-4 py-2.5 rounded-2xl">
             <div class="flex items-center space-x-2">
                 <span class="text-xs font-semibold uppercase tracking-widest text-gray-400 mono-font">Тема:</span>
                 <div class="flex items-center space-x-1.5">
                     <button onclick="setAccent('#00f0ff', 'Неоновый Циан')" title="Циан" class="w-5 h-5 rounded-full bg-brand-cyan hover:scale-125 transition-transform ring-2 ring-white/10"></button>
                     <button onclick="setAccent('#7000ff', 'Фиолетовый')" title="Фиолетовый" class="w-5 h-5 rounded-full bg-brand-purple hover:scale-125 transition-transform ring-2 ring-white/10"></button>
+                    <button onclick="setAccent('#ff007f', 'Неоновый Пинки')" title="Розовый" class="w-5 h-5 rounded-full bg-brand-pink hover:scale-125 transition-transform ring-2 ring-white/10"></button>
                     <button onclick="setAccent('#00ff66', 'Изумрудный')" title="Зеленый" class="w-5 h-5 rounded-full bg-brand-green hover:scale-125 transition-transform ring-2 ring-white/10"></button>
                     <button onclick="setAccent('#ffaa00', 'Янтарь')" title="Янтарь" class="w-5 h-5 rounded-full bg-brand-amber hover:scale-125 transition-transform ring-2 ring-white/10"></button>
                 </div>
             </div>
             
-            <button onclick="shareProfile()" class="flex items-center space-x-1.5 text-xs text-gray-300 hover:text-white glass-card px-3 py-1.5 rounded-xl transition-colors hover:border-gray-500">
-                <i data-lucide="share-2" class="w-3.5 h-3.5 accent-text"></i>
-                <span class="mono-font">Поделиться</span>
-            </button>
+            <div class="flex items-center space-x-2">
+                <button onclick="shareProfile()" class="flex items-center space-x-1.5 text-xs text-gray-300 hover:text-white glass-card px-3 py-1.5 rounded-xl transition-colors hover:border-gray-500">
+                    <i data-lucide="share-2" class="w-3.5 h-3.5 accent-text"></i>
+                    <span class="mono-font hidden sm:inline">Поделиться</span>
+                </button>
+                <button onclick="openAdminAuthModal()" class="flex items-center space-x-1.5 text-xs text-white accent-bg text-black font-bold px-3 py-1.5 rounded-xl hover:opacity-90 transition-all shadow-lg">
+                    <i data-lucide="settings" class="w-3.5 h-3.5"></i>
+                    <span class="mono-font">Админка</span>
+                </button>
+            </div>
         </div>
 
+        <!-- Main Profile Card -->
         <div class="glass-card rounded-3xl p-6 text-center relative overflow-hidden group">
             <div class="absolute top-0 left-0 w-full h-1.5 accent-bg"></div>
             
             <div class="relative w-28 h-28 mx-auto mb-4">
                 <div class="absolute inset-0 rounded-full accent-bg blur-md opacity-50 group-hover:opacity-80 transition-opacity"></div>
-                <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=300&auto=format&fit=crop&q=80" 
+                <img id="viewAvatar" src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=300&auto=format&fit=crop&q=80" 
                      alt="MIRVEL Аватар" 
                      class="relative w-full h-full object-cover rounded-full border-2 border-white/20 p-1 bg-gray-900"
                      onerror="this.src='https://placehold.co/200x200/181824/00f0ff?text=MIRVEL'">
                 
-                <div class="absolute bottom-1 right-1 flex items-center bg-gray-900/90 border border-white/10 rounded-full px-2 py-0.5 space-x-1 shadow-lg" title="Онлайн">
-                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-                    <span class="w-2 h-2 rounded-full bg-emerald-400 absolute"></span>
+                <div id="viewStatusDot" class="absolute bottom-1 right-1 flex items-center bg-gray-900/90 border border-white/10 rounded-full px-2 py-0.5 space-x-1 shadow-lg" title="Статус">
+                    <span id="statusPulse" class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                    <span id="statusColor" class="w-2 h-2 rounded-full bg-emerald-400"></span>
                 </div>
             </div>
 
             <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-white mb-1 flex items-center justify-center gap-2">
-                MIRVEL <i data-lucide="badge-check" class="w-5 h-5 text-brand-cyan fill-brand-cyan/20"></i>
+                <span id="viewName">MIRVEL</span> 
+                <i data-lucide="badge-check" class="w-5 h-5 text-brand-cyan fill-brand-cyan/20"></i>
             </h1>
-            <p class="text-xs sm:text-sm text-gray-400 font-medium mb-3 mono-font">
+            <p id="viewRole" class="text-xs sm:text-sm text-gray-400 font-medium mb-3 mono-font">
                 Разработчик ботов • Коллекционер • Геймер
             </p>
-            <p class="text-sm text-gray-300 max-w-md mx-auto leading-relaxed mb-4">
+            <p id="viewBio" class="text-sm text-gray-300 max-w-md mx-auto leading-relaxed mb-4">
                 Создаю полезную автоматизацию (например, <span class="accent-text font-semibold">Парсер OLX</span>), собираю коллекции CD, винила и редких игр.
             </p>
 
             <div class="inline-flex items-center space-x-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs text-gray-300">
                 <i data-lucide="terminal" class="w-3.5 h-3.5 accent-text"></i>
-                <span>В процессе: <strong class="text-white">TG Бот v2.0 & Парсеры</strong></span>
+                <span>В процессе: <strong id="viewStatusText" class="text-white">TG Бот v2.0 & Парсеры</strong></span>
             </div>
         </div>
 
+        <!-- Social Networks Section -->
         <div class="space-y-3">
-            <h2 class="text-xs uppercase font-bold tracking-wider text-gray-400 px-1 mono-font flex items-center gap-2">
-                <i data-lucide="compass" class="w-3.5 h-3.5 accent-text"></i> Мои Соцсети и Ссылки
-            </h2>
+            <div class="flex items-center justify-between px-1">
+                <h2 class="text-xs uppercase font-bold tracking-wider text-gray-400 mono-font flex items-center gap-2">
+                    <i data-lucide="compass" class="w-3.5 h-3.5 accent-text"></i> Соцсети и Ссылки
+                </h2>
+                <span id="socialsCount" class="text-[10px] text-gray-500 mono-font">0 ссылок</span>
+            </div>
 
-            <a href="https://t.me" target="_blank" class="glass-card p-4 rounded-2xl flex items-center justify-between group transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
-                <div class="flex items-center space-x-3.5">
-                    <div class="w-10 h-10 rounded-xl bg-sky-500/10 border border-sky-500/20 flex items-center justify-center text-sky-400 group-hover:scale-110 transition-transform">
-                        <i data-lucide="send" class="w-5 h-5"></i>
-                    </div>
-                    <div>
-                        <h3 class="text-sm font-bold text-white group-hover:text-sky-400 transition-colors">Telegram Канал</h3>
-                        <p class="text-xs text-gray-400">Обновления ботов, находки и мысли</p>
-                    </div>
-                </div>
-                <i data-lucide="arrow-up-right" class="w-4 h-4 text-gray-500 group-hover:text-white transition-all"></i>
-            </a>
+            <div id="socialsList" class="space-y-2.5">
+                <!-- Dynamically Populated -->
+            </div>
 
             <!-- Anonymous Message Trigger -->
-            <button onclick="openAnonModal()" class="w-full glass-card p-4 rounded-2xl flex items-center justify-between group transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg text-left relative overflow-hidden">
+            <button onclick="openAnonModal()" class="w-full glass-card p-4 rounded-2xl flex items-center justify-between group transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg text-left relative overflow-hidden border border-brand-pink/30 hover:border-brand-pink">
                 <div class="absolute top-0 right-0 px-2.5 py-0.5 bg-brand-pink/20 border-b border-l border-brand-pink/30 rounded-bl-xl text-[10px] font-bold text-brand-pink mono-font">АНОНИМНО</div>
                 <div class="flex items-center space-x-3.5">
                     <div class="w-10 h-10 rounded-xl bg-pink-500/10 border border-pink-500/20 flex items-center justify-center text-pink-400 group-hover:scale-110 transition-transform">
                         <i data-lucide="message-square-plus" class="w-5 h-5"></i>
                     </div>
                     <div>
-                        <h3 class="text-sm font-bold text-white group-hover:text-pink-400 transition-colors">Анонимное сообщение в ТГ</h3>
-                        <p class="text-xs text-gray-400">Задать вопрос или отправить фидбек</p>
+                        <h3 class="text-sm font-bold text-white group-hover:text-pink-400 transition-colors">Анонимное сообщение</h3>
+                        <p class="text-xs text-gray-400">Написать сообщение прямо мне в Telegram</p>
                     </div>
                 </div>
                 <i data-lucide="chevron-right" class="w-4 h-4 text-gray-500 group-hover:text-white transition-all"></i>
             </button>
-
-            <a href="https://youtube.com" target="_blank" class="glass-card p-4 rounded-2xl flex items-center justify-between group transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
-                <div class="flex items-center space-x-3.5">
-                    <div class="w-10 h-10 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-400 group-hover:scale-110 transition-transform">
-                        <i data-lucide="youtube" class="w-5 h-5"></i>
-                    </div>
-                    <div>
-                        <h3 class="text-sm font-bold text-white group-hover:text-red-400 transition-colors">YouTube Канал</h3>
-                        <p class="text-xs text-gray-400">Обзоры техники, видео и стримы</p>
-                    </div>
-                </div>
-                <i data-lucide="arrow-up-right" class="w-4 h-4 text-gray-500 group-hover:text-white transition-all"></i>
-            </a>
-
-            <a href="https://github.com" target="_blank" class="glass-card p-4 rounded-2xl flex items-center justify-between group transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
-                <div class="flex items-center space-x-3.5">
-                    <div class="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 group-hover:scale-110 transition-transform">
-                        <i data-lucide="github" class="w-5 h-5"></i>
-                    </div>
-                    <div>
-                        <h3 class="text-sm font-bold text-white group-hover:text-purple-400 transition-colors">GitHub Репозиторий</h3>
-                        <p class="text-xs text-gray-400">Исходники ботов, скрипты и парсеры</p>
-                    </div>
-                </div>
-                <i data-lucide="arrow-up-right" class="w-4 h-4 text-gray-500 group-hover:text-white transition-all"></i>
-            </a>
         </div>
 
-        <div class="glass-card rounded-3xl p-5 relative overflow-hidden border border-white/10">
-            <div class="flex items-center justify-between mb-3">
-                <div class="flex items-center space-x-2">
-                    <i data-lucide="disc" class="w-4 h-4 accent-text animate-spin" style="animation-duration: 8s;"></i>
-                    <span class="text-xs font-bold uppercase tracking-wider text-gray-300 mono-font">Любимая музыка</span>
-                </div>
-                <div id="equalizerVisualizer" class="h-4 flex items-end space-x-1">
-                    <div class="eq-bar"></div>
-                    <div class="eq-bar"></div>
-                    <div class="eq-bar"></div>
-                    <div class="eq-bar"></div>
-                </div>
-            </div>
+        <!-- Music Player Section -->
+        <div id="musicContainer" class="glass-card rounded-3xl p-5 relative overflow-hidden border border-white/10">
+            <!-- Populated via renderMusicPlayer() -->
+        </div>
 
-            <div class="flex items-center space-x-4">
-                <div class="relative w-16 h-16 rounded-2xl overflow-hidden shrink-0 group">
-                    <img id="trackCover" src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=200&auto=format&fit=crop&q=80" 
-                         alt="Обложка трека" 
-                         class="w-full h-full object-cover transition-transform group-hover:scale-105"
-                         onerror="this.src='https://placehold.co/100x100/1e1e2d/ffffff?text=Synth'">
-                    <button id="playPauseBtn" onclick="togglePlay()" class="absolute inset-0 bg-black/40 flex items-center justify-center text-white opacity-90 hover:opacity-100 transition-opacity">
-                        <i id="playIcon" data-lucide="pause" class="w-6 h-6 fill-white"></i>
-                    </button>
-                </div>
-
-                <div class="flex-1 min-w-0">
-                    <h4 id="trackTitle" class="text-sm font-bold text-white truncate">Cyberpunk Synthwave Mix</h4>
-                    <p id="trackArtist" class="text-xs text-gray-400 truncate mb-2">MIRVEL Collection • Lo-Fi Beats</p>
-                    
-                    <div class="w-full bg-white/10 rounded-full h-1.5 overflow-hidden cursor-pointer" onclick="seekTrack(event)">
-                        <div id="trackProgress" class="accent-bg h-full w-2/5 rounded-full transition-all duration-300"></div>
-                    </div>
-                    <div class="flex justify-between text-[10px] text-gray-500 font-mono mt-1">
-                        <span id="currentTime">0:48</span>
-                        <span id="totalTime">2:15</span>
-                    </div>
-                </div>
-
-                <div class="flex flex-col space-y-1">
-                    <button onclick="nextTrack()" class="p-1.5 rounded-lg hover:bg-white/5 text-gray-400 hover:text-white transition-colors" title="Следующий трек">
-                        <i data-lucide="skip-forward" class="w-4 h-4"></i>
-                    </button>
-                    <button id="muteBtn" onclick="toggleMute()" class="p-1.5 rounded-lg hover:bg-white/5 text-gray-400 hover:text-white transition-colors" title="Звук">
-                        <i id="volumeIcon" data-lucide="volume-2" class="w-4 h-4"></i>
-                    </button>
-                </div>
+        <!-- Featured Projects Showcase -->
+        <div class="space-y-3">
+            <h2 class="text-xs uppercase font-bold tracking-wider text-gray-400 px-1 mono-font flex items-center gap-2">
+                <i data-lucide="code-2" class="w-3.5 h-3.5 accent-text"></i> Мои Проекты
+            </h2>
+            <div id="projectsGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <!-- Dynamically populated -->
             </div>
         </div>
 
+        <!-- Collection Section -->
         <div id="collection" class="space-y-4 pt-2">
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div>
                     <h2 class="text-xs uppercase font-bold tracking-wider text-gray-400 px-1 mono-font flex items-center gap-2">
-                        <i data-lucide="library" class="w-3.5 h-3.5 accent-text"></i> Моя Коллекция (<span id="totalCount">0</span>)
+                        <i data-lucide="library" class="w-3.5 h-3.5 accent-text"></i> Коллекция (<span id="totalCount">0</span>)
                     </h2>
                 </div>
                 
@@ -303,22 +244,50 @@
         </div>
 
         <footer class="pt-6 border-t border-white/5 text-center text-xs text-gray-500 space-y-2">
-            <p>© 2026 MIRVEL • Создано для GitHub Pages</p>
-            <div class="flex items-center justify-center space-x-4 text-gray-400">
-                <a href="https://t.me" target="_blank" class="hover:text-white transition-colors">Telegram</a>
-                <span>•</span>
-                <a href="https://github.com" target="_blank" class="hover:text-white transition-colors">GitHub</a>
-                <span>•</span>
-                <a href="https://youtube.com" target="_blank" class="hover:text-white transition-colors">YouTube</a>
+            <p>© 2026 MIRVEL • Личная карточка & Портфолио</p>
+            <div id="footerLinks" class="flex items-center justify-center space-x-4 text-gray-400">
+                <!-- Dynamically synced -->
             </div>
         </footer>
 
     </main>
 
-    <!-- Toast Popup -->
-    <div id="toast" class="fixed bottom-6 right-6 transform translate-y-20 opacity-0 transition-all duration-300 z-50 glass-card border border-brand-cyan/40 px-4 py-3 rounded-2xl shadow-2xl flex items-center space-x-3 pointer-events-none">
-        <i data-lucide="check-circle-2" class="w-5 h-5 text-brand-cyan"></i>
-        <span id="toastMsg" class="text-sm font-medium text-white">Ссылка скопирована!</span>
+    <!-- Toast Popup Notification -->
+    <div id="toast" class="fixed bottom-6 right-6 transform translate-y-20 opacity-0 transition-all duration-300 z-[100] glass-card border border-brand-cyan/40 px-4 py-3 rounded-2xl shadow-2xl flex items-center space-x-3 pointer-events-none">
+        <i id="toastIcon" data-lucide="check-circle-2" class="w-5 h-5 text-brand-cyan"></i>
+        <span id="toastMsg" class="text-sm font-medium text-white">Действие выполнено!</span>
+    </div>
+
+    <!-- Modal: Anonymous TG Message -->
+    <div id="anonModal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div class="glass-card w-full max-w-md rounded-3xl p-6 border border-white/10 relative">
+            <button onclick="closeAnonModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white p-1 rounded-full bg-white/5">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+            
+            <h3 class="text-lg font-bold text-white mb-1 flex items-center gap-2">
+                <i data-lucide="message-square" class="w-5 h-5 text-brand-pink"></i> Анонимное сообщение
+            </h3>
+            <p class="text-xs text-gray-400 mb-4">Напиши вопрос, отзыв или предложение. Сообщение уйдёт анонимно.</p>
+
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-gray-300 mb-1">Твоё сообщение *</label>
+                    <textarea id="anonText" rows="4" placeholder="Привет! Хочу заказать бота или спросить..." class="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-brand-pink resize-none"></textarea>
+                </div>
+
+                <div class="flex items-center justify-between">
+                    <span id="anonBotStatus" class="text-[11px] text-gray-400 mono-font">🔒 Прямая отправка</span>
+                    <div class="flex space-x-2">
+                        <button onclick="closeAnonModal()" class="px-4 py-2 rounded-xl bg-white/10 text-xs font-semibold text-gray-300 hover:bg-white/20 transition-colors">Отмена</button>
+                        <button id="sendAnonBtn" onclick="sendAnonMessage()" class="px-4 py-2 rounded-xl bg-brand-pink text-xs font-bold text-white hover:opacity-90 transition-opacity flex items-center gap-1.5">
+                            <i data-lucide="send" class="w-3.5 h-3.5"></i>
+                            <span>Отправить</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Modal: Add Item to Collection -->
@@ -365,7 +334,7 @@
                 </div>
 
                 <div>
-                    <label class="block text-xs font-semibold text-gray-300 mb-1">Ссылка на картинку (необязательно)</label>
+                    <label class="block text-xs font-semibold text-gray-300 mb-1">Ссылка на обложку</label>
                     <input type="url" id="itemCover" placeholder="https://images.unsplash.com/..." class="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-brand-cyan">
                 </div>
 
@@ -377,112 +346,701 @@
         </div>
     </div>
 
-    <!-- Modal: Anonymous TG Message -->
-    <div id="anonModal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
-        <div class="glass-card w-full max-w-md rounded-3xl p-6 border border-white/10 relative">
-            <button onclick="closeAnonModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white p-1 rounded-full bg-white/5">
-                <i data-lucide="x" class="w-5 h-5"></i>
-            </button>
-            
-            <h3 class="text-lg font-bold text-white mb-2 flex items-center gap-2">
-                <i data-lucide="message-square" class="w-5 h-5 text-brand-pink"></i> Анонимное сообщение
-            </h3>
-            <p class="text-xs text-gray-400 mb-4">Отправить анонимное сообщение в Telegram-бота или личку.</p>
-
-            <div class="space-y-4">
-                <div>
-                    <label class="block text-xs font-semibold text-gray-300 mb-1">Твое сообщение</label>
-                    <textarea id="anonText" rows="4" placeholder="Напиши что угодно..." class="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-brand-pink resize-none"></textarea>
-                </div>
-
-                <div class="flex justify-end space-x-3">
-                    <button onclick="closeAnonModal()" class="px-4 py-2 rounded-xl bg-white/10 text-xs font-semibold text-gray-300 hover:bg-white/20 transition-colors">Отмена</button>
-                    <button onclick="sendAnonMessage()" class="px-4 py-2 rounded-xl bg-brand-pink text-xs font-bold text-white hover:opacity-90 transition-opacity flex items-center gap-1.5">
-                        <i data-lucide="send" class="w-3.5 h-3.5"></i>
-                        <span>Отправить в TG</span>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- Modal: JSON Export / Import -->
     <div id="exportModal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
-        <div class="glass-card w-full max-w-md rounded-3xl p-6 border border-white/10 relative">
+        <div class="glass-card w-full max-w-lg rounded-3xl p-6 border border-white/10 relative">
             <button onclick="closeExportModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white p-1 rounded-full bg-white/5">
                 <i data-lucide="x" class="w-5 h-5"></i>
             </button>
             
             <h3 class="text-lg font-bold text-white mb-2 flex items-center gap-2">
-                <i data-lucide="code" class="w-5 h-5 accent-text"></i> Данные Коллекции (JSON)
+                <i data-lucide="code" class="w-5 h-5 accent-text"></i> Редактор Данных (JSON)
             </h3>
-            <p class="text-xs text-gray-400 mb-3">Скопируй этот код и вставь его в переменную <code class="mono-font accent-text">DEFAULT_COLLECTION</code> в файле index.html на GitHub, чтобы сохранить коллекцию навсегда!</p>
+            <p class="text-xs text-gray-400 mb-3">Здесь хранится вся конфигурация твоего сайта. Ты можешь скопировать JSON для резервной копии или вставить свой.</p>
 
-            <textarea id="jsonOutput" rows="6" readonly class="w-full bg-black/50 border border-white/10 rounded-xl p-3 text-xs text-brand-cyan mono-font focus:outline-none resize-none"></textarea>
+            <textarea id="jsonOutput" rows="10" class="w-full bg-black/60 border border-white/10 rounded-xl p-3 text-xs text-brand-cyan mono-font focus:outline-none resize-none"></textarea>
 
-            <div class="flex justify-end space-x-3 mt-4">
+            <div class="flex justify-between items-center mt-4">
+                <button onclick="applyImportJson()" class="px-3 py-2 rounded-xl bg-emerald-500/20 text-emerald-300 hover:bg-emerald-500/30 text-xs font-bold border border-emerald-500/30">Импортировать JSON</button>
                 <button onclick="copyJsonCode()" class="px-4 py-2 rounded-xl accent-bg text-xs font-bold text-black hover:opacity-90 transition-opacity flex items-center gap-1.5">
                     <i data-lucide="copy" class="w-3.5 h-3.5"></i>
-                    <span>Скопировать JSON</span>
+                    <span>Скопировать</span>
                 </button>
             </div>
         </div>
     </div>
 
+    <!-- Admin Auth Password Modal -->
+    <div id="adminAuthModal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div class="glass-card w-full max-w-xs rounded-3xl p-6 border border-white/10 relative text-center">
+            <button onclick="closeAdminAuthModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white p-1 rounded-full bg-white/5">
+                <i data-lucide="x" class="w-4 h-4"></i>
+            </button>
+
+            <div class="w-12 h-12 rounded-2xl bg-brand-cyan/10 border border-brand-cyan/20 text-brand-cyan flex items-center justify-center mx-auto mb-3">
+                <i data-lucide="lock" class="w-6 h-6"></i>
+            </div>
+            
+            <h3 class="text-base font-bold text-white mb-1">Вход в Админку</h3>
+            <p class="text-xs text-gray-400 mb-4">Пароль по умолчанию: <code class="accent-text font-bold">1234</code></p>
+
+            <form onsubmit="verifyAdminPassword(event)" class="space-y-3">
+                <input type="password" id="adminPassInput" required placeholder="Введите пароль..." class="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-sm text-center text-white focus:outline-none focus:border-brand-cyan tracking-widest">
+                <button type="submit" class="w-full py-2 rounded-xl accent-bg text-xs font-bold text-black hover:opacity-90 transition-opacity">Войти</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- FULL ADMIN PANEL MODAL -->
+    <div id="adminPanelModal" class="fixed inset-0 bg-black/90 backdrop-blur-xl z-[60] hidden flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
+        <div class="glass-card w-full max-w-3xl rounded-3xl p-4 sm:p-6 border border-white/15 my-auto max-h-[92vh] flex flex-col relative shadow-2xl">
+            
+            <!-- Admin Header -->
+            <div class="flex items-center justify-between pb-4 border-b border-white/10 shrink-0">
+                <div class="flex items-center space-x-2">
+                    <div class="p-2 rounded-xl accent-bg text-black font-bold">
+                        <i data-lucide="sliders" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-base sm:text-lg font-bold text-white">Панель Управления MIRVEL</h2>
+                        <p class="text-[11px] text-gray-400">Полная настройка сайта, ссылок, музыки и анонимки</p>
+                    </div>
+                </div>
+                <button onclick="closeAdminPanel()" class="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white transition-colors">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <!-- Admin Navigation Tabs -->
+            <div class="flex items-center space-x-1 py-3 border-b border-white/5 text-xs overflow-x-auto shrink-0">
+                <button onclick="switchAdminTab('profile')" class="admin-tab-btn active px-3 py-2 rounded-xl font-medium transition-all shrink-0 bg-white/10 text-white" data-tab="profile">
+                    👤 Профиль
+                </button>
+                <button onclick="switchAdminTab('socials')" class="admin-tab-btn px-3 py-2 rounded-xl font-medium transition-all shrink-0 text-gray-400 hover:text-white" data-tab="socials">
+                    🔗 Соцсети (<span id="adminSocialsBadge">0</span>)
+                </button>
+                <button onclick="switchAdminTab('music')" class="admin-tab-btn px-3 py-2 rounded-xl font-medium transition-all shrink-0 text-gray-400 hover:text-white" data-tab="music">
+                    🎵 Музыка
+                </button>
+                <button onclick="switchAdminTab('bot')" class="admin-tab-btn px-3 py-2 rounded-xl font-medium transition-all shrink-0 text-gray-400 hover:text-white" data-tab="bot">
+                    🤖 Telegram Бот
+                </button>
+                <button onclick="switchAdminTab('projects')" class="admin-tab-btn px-3 py-2 rounded-xl font-medium transition-all shrink-0 text-gray-400 hover:text-white" data-tab="projects">
+                    🚀 Проекты
+                </button>
+                <button onclick="switchAdminTab('security')" class="admin-tab-btn px-3 py-2 rounded-xl font-medium transition-all shrink-0 text-gray-400 hover:text-white" data-tab="security">
+                    🔑 Безопасность
+                </button>
+            </div>
+
+            <!-- Admin Content Body -->
+            <div class="py-4 overflow-y-auto space-y-4 flex-1 pr-1">
+
+                <!-- TAB 1: PROFILE -->
+                <div id="adminTabContent_profile" class="admin-tab-content space-y-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-300 mb-1">Имя / Никнейм</label>
+                            <input type="text" id="admName" class="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-brand-cyan">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-300 mb-1">Подзаголовок / Роли</label>
+                            <input type="text" id="admRole" class="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-brand-cyan">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-300 mb-1">Ссылка на Аватар (URL)</label>
+                        <input type="url" id="admAvatar" class="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-brand-cyan">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-300 mb-1">О себе (Био)</label>
+                        <textarea id="admBio" rows="3" class="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-brand-cyan resize-none"></textarea>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-300 mb-1">Статус в процессе ("В процессе: ...")</label>
+                            <input type="text" id="admStatusText" class="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-brand-cyan">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-300 mb-1">Индикатор статуса</label>
+                            <select id="admStatusType" class="w-full bg-gray-900 border border-white/10 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-brand-cyan">
+                                <option value="online">🟢 В сети (Online)</option>
+                                <option value="dnd">🔴 Не беспокоить (DND)</option>
+                                <option value="away">🟡 Неместе (Away)</option>
+                                <option value="offline">⚪ Офлайн (Offline)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 2: SOCIALS CRUD -->
+                <div id="adminTabContent_socials" class="admin-tab-content hidden space-y-4">
+                    <div class="flex items-center justify-between bg-white/5 p-3 rounded-2xl border border-white/10">
+                        <span class="text-xs font-bold text-white">Управление соцсетями и ссылками</span>
+                        <button onclick="openAddSocialModal()" class="px-3 py-1.5 rounded-xl accent-bg text-black font-bold text-xs flex items-center gap-1 hover:opacity-90">
+                            <i data-lucide="plus" class="w-4 h-4"></i>
+                            <span>Добавить соцсеть</span>
+                        </button>
+                    </div>
+
+                    <div id="adminSocialsList" class="space-y-2">
+                        <!-- Populated dynamically -->
+                    </div>
+                </div>
+
+                <!-- TAB 3: MUSIC SETTINGS -->
+                <div id="adminTabContent_music" class="admin-tab-content hidden space-y-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-300 mb-1">Режим Плеера</label>
+                        <select id="admMusicMode" onchange="toggleMusicModeInputs()" class="w-full bg-gray-900 border border-white/10 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-brand-cyan">
+                            <option value="custom">🎵 Кастомный плеер (Встроенные треки)</option>
+                            <option value="spotify">💚 Spotify Embed (Плеер по ссылке)</option>
+                            <option value="youtube">🔴 YouTube Embed (Плеер видео)</option>
+                        </select>
+                    </div>
+
+                    <div id="musicModeSpotifyInput" class="hidden space-y-2">
+                        <label class="block text-xs font-semibold text-gray-300">Ссылка на Spotify трек или альбом</label>
+                        <input type="text" id="admSpotifyUrl" placeholder="https://open.spotify.com/track/..." class="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-brand-cyan">
+                        <p class="text-[11px] text-gray-400">Просто скопируй ссылку из приложения Spotify и вставь сюда!</p>
+                    </div>
+
+                    <div id="musicModeYoutubeInput" class="hidden space-y-2">
+                        <label class="block text-xs font-semibold text-gray-300">Ссылка на YouTube видео / музыку</label>
+                        <input type="text" id="admYoutubeUrl" placeholder="https://www.youtube.com/watch?v=... или https://youtu.be/..." class="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-brand-cyan">
+                    </div>
+
+                    <div id="musicModeCustomInput" class="space-y-3">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold text-gray-300">Список кастомных треков</span>
+                            <button onclick="addCustomTrackRow()" class="px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-xs font-semibold text-white">
+                                + Добавить трек
+                            </button>
+                        </div>
+                        <div id="admTracksContainer" class="space-y-2">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 4: TELEGRAM BOT INTEGRATION -->
+                <div id="adminTabContent_bot" class="admin-tab-content hidden space-y-4">
+                    <div class="p-4 rounded-2xl bg-brand-purple/10 border border-brand-purple/30 space-y-2">
+                        <div class="flex items-center gap-2 text-brand-purple text-sm font-bold">
+                            <i data-lucide="bot" class="w-5 h-5"></i>
+                            <span>Инструкция по настройке бота Telegram</span>
+                        </div>
+                        <ol class="text-xs text-gray-300 space-y-1 list-decimal list-inside leading-relaxed">
+                            <li>Открой Telegram и найди бота <strong class="text-white">@BotFather</strong></li>
+                            <li>Отправь ему команду <code class="accent-text font-mono">/newbot</code> и следуй подсказкам для создания</li>
+                            <li>Скопируй полученный **HTTP API Token** и вставь его в поле ниже</li>
+                            <li>Чтобы узнать твой **Chat ID**, напиши боту <strong class="text-white">@userinfobot</strong> в Telegram</li>
+                            <li>Вставь твой цифровой ID в поле "Твой Telegram Chat ID" и нажми "Тест"!</li>
+                        </ol>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-300 mb-1">Telegram Bot API Token *</label>
+                            <input type="password" id="admBotToken" placeholder="123456789:ABCdefGhIJKlmNoPQ..." class="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-brand-cyan font-mono">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-300 mb-1">Твой Telegram Chat ID *</label>
+                            <input type="text" id="admChatId" placeholder="Например: 987654321" class="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-brand-cyan font-mono">
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-between pt-2">
+                        <button onclick="testTelegramBot()" class="px-4 py-2 rounded-xl bg-brand-cyan/20 text-brand-cyan hover:bg-brand-cyan/30 border border-brand-cyan/30 text-xs font-bold flex items-center gap-1.5">
+                            <i data-lucide="send" class="w-3.5 h-3.5"></i>
+                            <span>Отправить тестовое сообщение</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- TAB 5: PROJECTS SHOWCASE -->
+                <div id="adminTabContent_projects" class="admin-tab-content hidden space-y-4">
+                    <div class="flex items-center justify-between bg-white/5 p-3 rounded-2xl border border-white/10">
+                        <span class="text-xs font-bold text-white">Мои Проекты и Разработки</span>
+                        <button onclick="addProjectRow()" class="px-3 py-1.5 rounded-xl accent-bg text-black font-bold text-xs flex items-center gap-1 hover:opacity-90">
+                            <i data-lucide="plus" class="w-4 h-4"></i>
+                            <span>Добавить проект</span>
+                        </button>
+                    </div>
+                    <div id="admProjectsContainer" class="space-y-3">
+                        <!-- Dynamically populated -->
+                    </div>
+                </div>
+
+                <!-- TAB 6: SECURITY -->
+                <div id="adminTabContent_security" class="admin-tab-content hidden space-y-4 max-w-sm mx-auto py-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-300 mb-1">Новый пароль админки</label>
+                        <input type="password" id="admNewPassword" placeholder="Введите новый пароль..." class="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-brand-cyan">
+                    </div>
+                    <button onclick="changeAdminPassword()" class="w-full py-2.5 rounded-xl accent-bg text-xs font-bold text-black hover:opacity-90 transition-opacity">
+                        Обновить пароль
+                    </button>
+                </div>
+
+            </div>
+
+            <!-- Admin Footer Controls -->
+            <div class="flex items-center justify-between pt-4 border-t border-white/10 shrink-0">
+                <button onclick="resetAllDataToDefault()" class="px-3 py-2 rounded-xl bg-red-500/10 text-red-400 hover:bg-red-500/20 text-xs font-bold border border-red-500/20">
+                    Сбросить всё
+                </button>
+                <div class="flex space-x-2">
+                    <button onclick="closeAdminPanel()" class="px-4 py-2 rounded-xl bg-white/10 text-xs font-semibold text-gray-300 hover:bg-white/20">Закрыть</button>
+                    <button onclick="saveAdminSettings()" class="px-5 py-2 rounded-xl accent-bg text-xs font-bold text-black hover:opacity-90 transition-opacity shadow-lg flex items-center gap-1">
+                        <i data-lucide="save" class="w-4 h-4"></i>
+                        <span>Сохранить всё</span>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Modal: Add Social Link -->
+    <div id="addSocialModal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-[70] hidden flex items-center justify-center p-4">
+        <div class="glass-card w-full max-w-md rounded-3xl p-6 border border-white/10 relative">
+            <button onclick="closeAddSocialModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white p-1 rounded-full bg-white/5">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+            
+            <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                <i data-lucide="link" class="w-5 h-5 accent-text"></i> Добавить Соцсеть
+            </h3>
+
+            <form onsubmit="handleAddSocialSubmit(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-gray-300 mb-1">Платформа *</label>
+                    <select id="socPlatform" class="w-full bg-gray-900 border border-white/10 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-brand-cyan">
+                        <option value="telegram">Telegram (Канал / Чат / ЛС)</option>
+                        <option value="spotify">Spotify</option>
+                        <option value="twitch">Twitch</option>
+                        <option value="steam">Steam Profile</option>
+                        <option value="youtube">YouTube</option>
+                        <option value="github">GitHub</option>
+                        <option value="discord">Discord</option>
+                        <option value="kick">Kick Stream</option>
+                        <option value="vk">ВКонтакте (VK)</option>
+                        <option value="twitter">Twitter / X</option>
+                        <option value="website">Личный сайт / Кастомная ссылка</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-gray-300 mb-1">Заголовок кнопки *</label>
+                    <input type="text" id="socTitle" required placeholder="Например: Мой ТГ Канал" class="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-brand-cyan">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-gray-300 mb-1">Подпись / Описание</label>
+                    <input type="text" id="socSubtitle" placeholder="Например: Обновления, боты и мысли" class="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-brand-cyan">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-gray-300 mb-1">Ссылка (URL) *</label>
+                    <input type="url" id="socUrl" required placeholder="https://..." class="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-brand-cyan">
+                </div>
+
+                <div class="flex justify-end space-x-3 pt-2">
+                    <button type="button" onclick="closeAddSocialModal()" class="px-4 py-2 rounded-xl bg-white/10 text-xs font-semibold text-gray-300 hover:bg-white/20">Отмена</button>
+                    <button type="submit" class="px-4 py-2 rounded-xl accent-bg text-xs font-bold text-black hover:opacity-90">Добавить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script>
-        lucide.createIcons();
-
-        // Default Collection Data (Used as seed)
-        const DEFAULT_COLLECTION = [
-            {
-                id: '1',
-                title: 'Cyberpunk 2077 Collector Discs',
-                subtitle: 'PS5 • Физическое издание',
-                category: 'games',
-                status: 'owned',
-                cover: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=500&auto=format&fit=crop&q=80'
+        // Initial Default Settings Seed
+        const INITIAL_SETTINGS = {
+            adminPassword: '1234',
+            profile: {
+                name: 'MIRVEL',
+                role: 'Разработчик ботов • Коллекционер • Геймер',
+                avatar: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=300&auto=format&fit=crop&q=80',
+                bio: 'Создаю полезную автоматизацию (например, Парсер OLX), собираю коллекции CD, винила и редких игр.',
+                statusText: 'TG Бот v2.0 & Парсеры',
+                statusType: 'online', // 'online', 'dnd', 'away', 'offline'
+                accentColor: '#00f0ff'
             },
-            {
-                id: '2',
-                title: 'Random Access Memories Vinyl',
-                subtitle: 'Daft Punk • 2xLP Vinyl',
-                category: 'vinyl',
-                status: 'owned',
-                cover: 'https://images.unsplash.com/photo-1539185441755-769473a23570?w=500&auto=format&fit=crop&q=80'
+            telegramBot: {
+                botToken: '',
+                chatId: ''
             },
-            {
-                id: '3',
-                title: 'The Prodigy - Fat of the Land',
-                subtitle: 'Audio CD Album 1997',
-                category: 'cd',
-                status: 'owned',
-                cover: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=500&auto=format&fit=crop&q=80'
+            socials: [
+                {
+                    id: 's1',
+                    platform: 'telegram',
+                    title: 'Telegram Канал',
+                    subtitle: 'Обновления ботов, находки и мысли',
+                    url: 'https://t.me/m1rveel'
+                },
+                {
+                    id: 's2',
+                    platform: 'spotify',
+                    title: 'Мой Spotify Плейлист',
+                    subtitle: 'Любимый synthwave, lo-fi и рок',
+                    url: 'https://open.spotify.com'
+                },
+                {
+                    id: 's3',
+                    platform: 'twitch',
+                    title: 'Twitch Стримы',
+                    subtitle: 'Прямые трансляции игр и кодинга',
+                    url: 'https://twitch.tv'
+                },
+                {
+                    id: 's4',
+                    platform: 'steam',
+                    title: 'Steam Профиль',
+                    subtitle: 'Игры, коллекция значков и карточек',
+                    url: 'https://steamcommunity.com'
+                },
+                {
+                    id: 's5',
+                    platform: 'youtube',
+                    title: 'YouTube Канал',
+                    subtitle: 'Обзоры техники, видео и гайды',
+                    url: 'https://youtube.com'
+                },
+                {
+                    id: 's6',
+                    platform: 'github',
+                    title: 'GitHub Репозиторий',
+                    subtitle: 'Исходники ботов, скрипты и парсеры',
+                    url: 'https://github.com'
+                }
+            ],
+            music: {
+                mode: 'custom', // 'custom', 'spotify', 'youtube'
+                spotifyUrl: 'https://open.spotify.com/track/4cOdK2wGLETKBW3PvgPWqT',
+                youtubeUrl: 'https://www.youtube.com/watch?v=5qap5aO4i9A',
+                tracks: [
+                    {
+                        title: "Cyberpunk Synthwave Mix 2026",
+                        artist: "MIRVEL Collection • Synth Beats",
+                        cover: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=200&auto=format&fit=crop&q=80"
+                    },
+                    {
+                        title: "Night City Driving OST",
+                        artist: "Retro Wave • Electronic Chill",
+                        cover: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=200&auto=format&fit=crop&q=80"
+                    }
+                ]
             },
-            {
-                id: '4',
-                title: 'Half-Life 2 Big Box Edition',
-                subtitle: 'PC • Ретро бокс',
-                category: 'games',
-                status: 'wishlist',
-                cover: 'https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=500&auto=format&fit=crop&q=80'
-            }
-        ];
+            projects: [
+                {
+                    id: 'p1',
+                    title: 'Парсер OLX / Авито',
+                    desc: 'Мгновенный мониторинг новых объявлений с уведомлением в TG.',
+                    icon: 'cpu',
+                    tag: 'Python • Async'
+                },
+                {
+                    id: 'p2',
+                    title: 'Telegram Бот-Менеджер',
+                    desc: 'Система автоматизации продаж и анонимной обратной связи.',
+                    icon: 'bot',
+                    tag: 'Node.js • API'
+                }
+            ],
+            collection: [
+                {
+                    id: '1',
+                    title: 'Cyberpunk 2077 Collector Discs',
+                    subtitle: 'PS5 • Физическое издание',
+                    category: 'games',
+                    status: 'owned',
+                    cover: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=500&auto=format&fit=crop&q=80'
+                },
+                {
+                    id: '2',
+                    title: 'Random Access Memories Vinyl',
+                    subtitle: 'Daft Punk • 2xLP Vinyl',
+                    category: 'vinyl',
+                    status: 'owned',
+                    cover: 'https://images.unsplash.com/photo-1539185441755-769473a23570?w=500&auto=format&fit=crop&q=80'
+                },
+                {
+                    id: '3',
+                    title: 'The Prodigy - Fat of the Land',
+                    subtitle: 'Audio CD Album 1997',
+                    category: 'cd',
+                    status: 'owned',
+                    cover: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=500&auto=format&fit=crop&q=80'
+                },
+                {
+                    id: '4',
+                    title: 'Half-Life 2 Big Box Edition',
+                    subtitle: 'PC • Ретро бокс',
+                    category: 'games',
+                    status: 'wishlist',
+                    cover: 'https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=500&auto=format&fit=crop&q=80'
+                }
+            ]
+        };
 
-        // Load collection from localStorage or default
-        let collectionData = JSON.parse(localStorage.getItem('mirvel_collection')) || DEFAULT_COLLECTION;
-        let currentFilter = 'all';
+        // Load app state from LocalStorage or initialize with defaults
+        let appState = JSON.parse(localStorage.getItem('mirvel_app_data')) || INITIAL_SETTINGS;
 
-        // Save collection
-        function saveCollection() {
-            localStorage.setItem('mirvel_collection', JSON.stringify(collectionData));
-            renderCollection();
+        function saveAppState() {
+            localStorage.setItem('mirvel_app_data', JSON.stringify(appState));
+            renderAll();
         }
 
-        // Render Collection Cards
+        // Platform metadata mapping for visual styling & icons
+        const PLATFORM_META = {
+            telegram: { name: 'Telegram', icon: 'send', colorBg: 'bg-sky-500/10', border: 'border-sky-500/20', text: 'text-sky-400' },
+            spotify: { name: 'Spotify', icon: 'music', colorBg: 'bg-emerald-500/10', border: 'border-emerald-500/20', text: 'text-emerald-400' },
+            twitch: { name: 'Twitch', icon: 'tv', colorBg: 'bg-purple-500/10', border: 'border-purple-500/20', text: 'text-purple-400' },
+            steam: { name: 'Steam', icon: 'gamepad-2', colorBg: 'bg-blue-600/10', border: 'border-blue-600/20', text: 'text-blue-400' },
+            youtube: { name: 'YouTube', icon: 'youtube', colorBg: 'bg-red-500/10', border: 'border-red-500/20', text: 'text-red-400' },
+            github: { name: 'GitHub', icon: 'github', colorBg: 'bg-purple-400/10', border: 'border-purple-400/20', text: 'text-purple-300' },
+            discord: { name: 'Discord', icon: 'message-square', colorBg: 'bg-indigo-500/10', border: 'border-indigo-500/20', text: 'text-indigo-400' },
+            kick: { name: 'Kick', icon: 'radio', colorBg: 'bg-green-500/10', border: 'border-green-500/20', text: 'text-green-400' },
+            vk: { name: 'VKontakte', icon: 'users', colorBg: 'bg-blue-500/10', border: 'border-blue-500/20', text: 'text-blue-400' },
+            twitter: { name: 'Twitter / X', icon: 'twitter', colorBg: 'bg-sky-400/10', border: 'border-sky-400/20', text: 'text-sky-300' },
+            website: { name: 'Вебсайт', icon: 'globe', colorBg: 'bg-brand-cyan/10', border: 'border-brand-cyan/20', text: 'text-brand-cyan' }
+        };
+
+        function renderAll() {
+            renderProfile();
+            renderSocials();
+            renderMusicPlayer();
+            renderProjects();
+            renderCollection();
+            renderFooterLinks();
+            lucide.createIcons();
+        }
+
+        // 1. Render Profile Details
+        function renderProfile() {
+            const p = appState.profile;
+            document.getElementById('viewName').innerText = p.name || 'MIRVEL';
+            document.getElementById('viewRole').innerText = p.role || '';
+            document.getElementById('viewBio').innerHTML = (p.bio || '').replace('Парсер OLX', '<span class="accent-text font-semibold">Парсер OLX</span>');
+            document.getElementById('viewStatusText').innerText = p.statusText || '';
+            document.getElementById('viewAvatar').src = p.avatar || '';
+
+            // Status Indicator Dot
+            const pulse = document.getElementById('statusPulse');
+            const color = document.getElementById('statusColor');
+            
+            if (p.statusType === 'online') {
+                pulse.className = 'w-2 h-2 rounded-full bg-emerald-400 animate-ping';
+                color.className = 'w-2 h-2 rounded-full bg-emerald-400';
+            } else if (p.statusType === 'dnd') {
+                pulse.className = 'hidden';
+                color.className = 'w-2 h-2 rounded-full bg-red-500';
+            } else if (p.statusType === 'away') {
+                pulse.className = 'hidden';
+                color.className = 'w-2 h-2 rounded-full bg-amber-400';
+            } else {
+                pulse.className = 'hidden';
+                color.className = 'w-2 h-2 rounded-full bg-gray-500';
+            }
+
+            if (p.accentColor) {
+                document.documentElement.style.setProperty('--accent-color', p.accentColor);
+            }
+        }
+
+        // 2. Render Social Links
+        function renderSocials() {
+            const list = document.getElementById('socialsList');
+            list.innerHTML = '';
+
+            const socials = appState.socials || [];
+            document.getElementById('socialsCount').innerText = `${socials.length} ссылок`;
+
+            socials.forEach(soc => {
+                const meta = PLATFORM_META[soc.platform] || PLATFORM_META.website;
+                const linkEl = document.createElement('a');
+                linkEl.href = soc.url;
+                linkEl.target = '_blank';
+                linkEl.className = 'glass-card p-4 rounded-2xl flex items-center justify-between group transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg';
+
+                linkEl.innerHTML = `
+                    <div class="flex items-center space-x-3.5">
+                        <div class="w-10 h-10 rounded-xl ${meta.colorBg} border ${meta.border} flex items-center justify-center ${meta.text} group-hover:scale-110 transition-transform">
+                            <i data-lucide="${meta.icon}" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-bold text-white group-hover:text-brand-cyan transition-colors">${soc.title}</h3>
+                            <p class="text-xs text-gray-400">${soc.subtitle || ''}</p>
+                        </div>
+                    </div>
+                    <i data-lucide="arrow-up-right" class="w-4 h-4 text-gray-500 group-hover:text-white transition-all"></i>
+                `;
+                list.appendChild(linkEl);
+            });
+        }
+
+        // 3. Render Music Player Component
+        let currentTrackIdx = 0;
+        let isMusicPlaying = false;
+        let isMuted = false;
+
+        function renderMusicPlayer() {
+            const container = document.getElementById('musicContainer');
+            const m = appState.music || { mode: 'custom' };
+
+            if (m.mode === 'spotify') {
+                let trackId = '4cOdK2wGLETKBW3PvgPWqT';
+                if (m.spotifyUrl && m.spotifyUrl.includes('spotify.com')) {
+                    const match = m.spotifyUrl.match(/(track|album|playlist)\/([a-zA-Z0-9]+)/);
+                    if (match) trackId = `${match[1]}/${match[2]}`;
+                }
+                container.innerHTML = `
+                    <iframe src="https://open.spotify.com/embed/${trackId}?utm_source=generator&theme=0" 
+                            width="100%" height="152" frameBorder="0" allowfullscreen="" 
+                            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
+                            loading="lazy" class="rounded-2xl"></iframe>
+                `;
+                return;
+            }
+
+            if (m.mode === 'youtube') {
+                let ytId = '5qap5aO4i9A';
+                if (m.youtubeUrl) {
+                    const match = m.youtubeUrl.match(/(?:v=|\/embed\/|\/1\/|\/v\/|https:\/\/youtu\.be\/|\/shorts\/)([^#&?]*)/);
+                    if (match && match[1]) ytId = match[1];
+                }
+                container.innerHTML = `
+                    <div class="aspect-video w-full rounded-2xl overflow-hidden border border-white/10 bg-black">
+                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/${ytId}" 
+                                title="YouTube player" frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen></iframe>
+                    </div>
+                `;
+                return;
+            }
+
+            // Default Custom Player
+            const tracks = (m.tracks && m.tracks.length > 0) ? m.tracks : INITIAL_SETTINGS.music.tracks;
+            const track = tracks[currentTrackIdx] || tracks[0];
+
+            container.innerHTML = `
+                <div class="flex items-center justify-between mb-3">
+                    <div class="flex items-center space-x-2">
+                        <i data-lucide="disc" class="w-4 h-4 accent-text ${isMusicPlaying ? 'animate-spin' : ''}" style="animation-duration: 8s;"></i>
+                        <span class="text-xs font-bold uppercase tracking-wider text-gray-300 mono-font">Музыкальный Плеер</span>
+                    </div>
+                    <div id="equalizerVisualizer" class="h-4 flex items-end space-x-1 ${isMusicPlaying ? '' : 'paused'}">
+                        <div class="eq-bar"></div>
+                        <div class="eq-bar"></div>
+                        <div class="eq-bar"></div>
+                        <div class="eq-bar"></div>
+                    </div>
+                </div>
+
+                <div class="flex items-center space-x-4">
+                    <div class="relative w-16 h-16 rounded-2xl overflow-hidden shrink-0 group">
+                        <img id="trackCover" src="${track.cover}" 
+                             alt="Обложка трека" 
+                             class="w-full h-full object-cover transition-transform group-hover:scale-105"
+                             onerror="this.src='https://placehold.co/100x100/1e1e2d/ffffff?text=Music'">
+                        <button onclick="togglePlayTrack()" class="absolute inset-0 bg-black/40 flex items-center justify-center text-white opacity-90 hover:opacity-100 transition-opacity">
+                            <i data-lucide="${isMusicPlaying ? 'pause' : 'play'}" class="w-6 h-6 fill-white"></i>
+                        </button>
+                    </div>
+
+                    <div class="flex-1 min-w-0">
+                        <h4 id="trackTitle" class="text-sm font-bold text-white truncate">${track.title}</h4>
+                        <p id="trackArtist" class="text-xs text-gray-400 truncate mb-2">${track.artist}</p>
+                        
+                        <div class="w-full bg-white/10 rounded-full h-1.5 overflow-hidden cursor-pointer" onclick="seekTrack(event)">
+                            <div id="trackProgress" class="accent-bg h-full w-2/5 rounded-full transition-all duration-300"></div>
+                        </div>
+                        <div class="flex justify-between text-[10px] text-gray-500 mono-font mt-1">
+                            <span id="currentTime">0:48</span>
+                            <span id="totalTime">2:15</span>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col space-y-1">
+                        <button onclick="nextTrack()" class="p-1.5 rounded-lg hover:bg-white/5 text-gray-400 hover:text-white transition-colors" title="Следующий трек">
+                            <i data-lucide="skip-forward" class="w-4 h-4"></i>
+                        </button>
+                        <button onclick="toggleMute()" class="p-1.5 rounded-lg hover:bg-white/5 text-gray-400 hover:text-white transition-colors" title="Звук">
+                            <i data-lucide="${isMuted ? 'volume-x' : 'volume-2'}" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function togglePlayTrack() {
+            isMusicPlaying = !isMusicPlaying;
+            renderMusicPlayer();
+            lucide.createIcons();
+        }
+
+        function nextTrack() {
+            const tracks = appState.music.tracks || INITIAL_SETTINGS.music.tracks;
+            currentTrackIdx = (currentTrackIdx + 1) % tracks.length;
+            isMusicPlaying = true;
+            renderMusicPlayer();
+            lucide.createIcons();
+            showToast(`Играет: ${tracks[currentTrackIdx].title}`);
+        }
+
+        function toggleMute() {
+            isMuted = !isMuted;
+            renderMusicPlayer();
+            lucide.createIcons();
+            showToast(isMuted ? 'Звук выключен' : 'Звук включен');
+        }
+
+        function seekTrack(e) {
+            const progress = document.getElementById('trackProgress');
+            if (!progress) return;
+            const rect = e.currentTarget.getBoundingClientRect();
+            const clickPosition = (e.clientX - rect.left) / rect.width;
+            progress.style.width = `${Math.round(clickPosition * 100)}%`;
+        }
+
+        // 4. Render Personal Projects Showcase
+        function renderProjects() {
+            const grid = document.getElementById('projectsGrid');
+            grid.innerHTML = '';
+
+            const projects = appState.projects || [];
+            projects.forEach(p => {
+                const card = document.createElement('div');
+                card.className = 'glass-card p-4 rounded-2xl flex flex-col justify-between space-y-2';
+                card.innerHTML = `
+                    <div>
+                        <div class="flex items-center justify-between mb-1.5">
+                            <span class="text-xs font-bold text-white flex items-center gap-1.5">
+                                <i data-lucide="${p.icon || 'code'}" class="w-4 h-4 accent-text"></i>
+                                ${p.title}
+                            </span>
+                            <span class="text-[10px] px-2 py-0.5 rounded-md bg-white/5 text-gray-400 border border-white/10 mono-font">${p.tag || 'Project'}</span>
+                        </div>
+                        <p class="text-xs text-gray-400 leading-relaxed">${p.desc}</p>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // 5. Render Collection Items
+        let currentFilter = 'all';
+
         function renderCollection() {
             const grid = document.getElementById('collectionGrid');
             grid.innerHTML = '';
 
+            const collectionData = appState.collection || [];
             const filtered = collectionData.filter(item => {
                 if (currentFilter === 'all') return true;
                 if (currentFilter === 'wishlist') return item.status === 'wishlist';
@@ -498,7 +1056,6 @@
                         <p class="text-xs">В этой категории пока ничего нет.</p>
                     </div>
                 `;
-                lucide.createIcons();
                 return;
             }
 
@@ -506,12 +1063,10 @@
                 const card = document.createElement('div');
                 card.className = 'glass-card rounded-2xl overflow-hidden group flex flex-col justify-between transition-all duration-300 hover:border-white/30';
                 
-                // Status tag design
                 let statusBadge = '<span class="bg-emerald-500/80 text-black font-bold">В наличии</span>';
                 if (item.status === 'shipping') statusBadge = '<span class="bg-amber-500/80 text-black font-bold">В пути</span>';
                 if (item.status === 'wishlist') statusBadge = '<span class="bg-pink-500/80 text-white font-bold">В вишлисте</span>';
 
-                // Category tag
                 let catName = 'Предмет';
                 if (item.category === 'cd') catName = 'CD Диск';
                 if (item.category === 'vinyl') catName = 'Винил';
@@ -528,7 +1083,7 @@
                         <div class="absolute top-2 left-2 text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-md mono-font">
                             ${statusBadge}
                         </div>
-                        <button onclick="deleteItem('${item.id}')" class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 p-1.5 rounded-lg bg-black/60 text-red-400 hover:text-red-300 transition-all">
+                        <button onclick="deleteCollectionItem('${item.id}')" class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 p-1.5 rounded-lg bg-black/60 text-red-400 hover:text-red-300 transition-all">
                             <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
                         </button>
                     </div>
@@ -545,40 +1100,28 @@
                 `;
                 grid.appendChild(card);
             });
-
-            lucide.createIcons();
         }
 
-        // Add Item Form Handler
-        function handleAddItem(e) {
-            e.preventDefault();
-            const title = document.getElementById('itemTitle').value;
-            const subtitle = document.getElementById('itemSubtitle').value;
-            const category = document.getElementById('itemCategory').value;
-            const status = document.getElementById('itemStatus').value;
-            const cover = document.getElementById('itemCover').value;
+        // 6. Render Footer Links
+        function renderFooterLinks() {
+            const footer = document.getElementById('footerLinks');
+            footer.innerHTML = '';
+            
+            const socials = appState.socials || [];
+            socials.slice(0, 4).forEach((soc, idx) => {
+                const a = document.createElement('a');
+                a.href = soc.url;
+                a.target = '_blank';
+                a.className = 'hover:text-white transition-colors';
+                a.innerText = soc.title;
+                footer.appendChild(a);
 
-            const newItem = {
-                id: Date.now().toString(),
-                title,
-                subtitle,
-                category,
-                status,
-                cover
-            };
-
-            collectionData.unshift(newItem);
-            saveCollection();
-            closeAddModal();
-            showToast('Предмет успешно добавлен!');
-            document.getElementById('addItemForm').reset();
-        }
-
-        // Delete Item
-        function deleteItem(id) {
-            collectionData = collectionData.filter(item => item.id !== id);
-            saveCollection();
-            showToast('Предмет удален из коллекции');
+                if (idx < Math.min(socials.length, 4) - 1) {
+                    const span = document.createElement('span');
+                    span.innerText = '•';
+                    footer.appendChild(span);
+                }
+            });
         }
 
         // Filter Collection
@@ -595,8 +1138,401 @@
                 }
             });
             renderCollection();
+            lucide.createIcons();
         }
 
+        // Add Item to Collection
+        function handleAddItem(e) {
+            e.preventDefault();
+            const newItem = {
+                id: Date.now().toString(),
+                title: document.getElementById('itemTitle').value,
+                subtitle: document.getElementById('itemSubtitle').value,
+                category: document.getElementById('itemCategory').value,
+                status: document.getElementById('itemStatus').value,
+                cover: document.getElementById('itemCover').value
+            };
+
+            appState.collection.unshift(newItem);
+            saveAppState();
+            closeAddModal();
+            showToast('Предмет добавлен в коллекцию!');
+            document.getElementById('addItemForm').reset();
+        }
+
+        function deleteCollectionItem(id) {
+            appState.collection = appState.collection.filter(i => i.id !== id);
+            saveAppState();
+            showToast('Предмет удалён');
+        }
+
+        // TELEGRAM ANONYMOUS MESSAGE SENDER
+        async function sendAnonMessage() {
+            const textInput = document.getElementById('anonText');
+            const message = textInput.value.trim();
+
+            if (!message) {
+                showToast('Пожалуйста, введите текст сообщения!', true);
+                return;
+            }
+
+            const botToken = appState.telegramBot?.botToken;
+            const chatId = appState.telegramBot?.chatId;
+
+            // If Bot API Credentials exist, send directly via Telegram Bot API
+            if (botToken && chatId) {
+                const sendBtn = document.getElementById('sendAnonBtn');
+                sendBtn.disabled = true;
+                sendBtn.innerText = 'Отправка...';
+
+                try {
+                    const formattedMsg = `📩 *Новое Анонимное Сообщение с визитки MIRVEL:*\n\n"${message}"\n\n⏰ _Время: ${new Date().toLocaleString()}_`;
+                    
+                    const response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            chat_id: chatId,
+                            text: formattedMsg,
+                            parse_mode: 'Markdown'
+                        })
+                    });
+
+                    const resData = await response.json();
+
+                    if (resData.ok) {
+                        showToast('Сообщение успешно отправлено в Telegram!');
+                        closeAnonModal();
+                        textInput.value = '';
+                    } else {
+                        showToast(`Ошибка бота: ${resData.description || 'Проверьте токен'}`, true);
+                    }
+                } catch (err) {
+                    showToast('Ошибка сети при отправке сообщения', true);
+                } finally {
+                    sendBtn.disabled = false;
+                    sendBtn.innerHTML = '<i data-lucide="send" class="w-3.5 h-3.5"></i><span>Отправить</span>';
+                    lucide.createIcons();
+                }
+            } else {
+                // Fallback: Open Telegram share/chat directly
+                showToast('Бот не настроен в админке! Открываю Telegram...');
+                window.open(`https://t.me/share/url?url=${encodeURIComponent('Анонимное сообщение для MIRVEL:')}&text=${encodeURIComponent(message)}`, '_blank');
+                closeAnonModal();
+                textInput.value = '';
+            }
+        }
+
+        // ADMIN PANEL LOGIC
+        function openAdminAuthModal() {
+            document.getElementById('adminAuthModal').classList.remove('hidden');
+        }
+        function closeAdminAuthModal() {
+            document.getElementById('adminAuthModal').classList.add('hidden');
+        }
+
+        function verifyAdminPassword(e) {
+            e.preventDefault();
+            const pass = document.getElementById('adminPassInput').value;
+            const currentPass = appState.adminPassword || '1234';
+
+            if (pass === currentPass) {
+                closeAdminAuthModal();
+                document.getElementById('adminPassInput').value = '';
+                openAdminPanel();
+                showToast('Добро пожаловать в админку!');
+            } else {
+                showToast('Неверный пароль!', true);
+            }
+        }
+
+        function openAdminPanel() {
+            document.getElementById('adminPanelModal').classList.remove('hidden');
+            loadAdminDataIntoForm();
+            switchAdminTab('profile');
+        }
+
+        function closeAdminPanel() {
+            document.getElementById('adminPanelModal').classList.add('hidden');
+        }
+
+        function switchAdminTab(tab) {
+            const tabs = document.querySelectorAll('.admin-tab-btn');
+            tabs.forEach(t => {
+                if (t.getAttribute('data-tab') === tab) {
+                    t.classList.add('bg-white/10', 'text-white', 'active');
+                    t.classList.remove('text-gray-400');
+                } else {
+                    t.classList.remove('bg-white/10', 'text-white', 'active');
+                    t.classList.add('text-gray-400');
+                }
+            });
+
+            const contents = document.querySelectorAll('.admin-tab-content');
+            contents.forEach(c => {
+                if (c.id === `adminTabContent_${tab}`) {
+                    c.classList.remove('hidden');
+                } else {
+                    c.classList.add('hidden');
+                }
+            });
+            lucide.createIcons();
+        }
+
+        // Populate Admin Form Fields with Current State
+        function loadAdminDataIntoForm() {
+            // Profile Form
+            document.getElementById('admName').value = appState.profile.name || '';
+            document.getElementById('admRole').value = appState.profile.role || '';
+            document.getElementById('admAvatar').value = appState.profile.avatar || '';
+            document.getElementById('admBio').value = appState.profile.bio || '';
+            document.getElementById('admStatusText').value = appState.profile.statusText || '';
+            document.getElementById('admStatusType').value = appState.profile.statusType || 'online';
+
+            // Socials List
+            renderAdminSocialsList();
+
+            // Music Form
+            document.getElementById('admMusicMode').value = appState.music.mode || 'custom';
+            document.getElementById('admSpotifyUrl').value = appState.music.spotifyUrl || '';
+            document.getElementById('admYoutubeUrl').value = appState.music.youtubeUrl || '';
+            toggleMusicModeInputs();
+            renderAdminTracksList();
+
+            // Bot Form
+            document.getElementById('admBotToken').value = appState.telegramBot?.botToken || '';
+            document.getElementById('admChatId').value = appState.telegramBot?.chatId || '';
+
+            // Projects List
+            renderAdminProjectsList();
+        }
+
+        // Admin Socials Management
+        function renderAdminSocialsList() {
+            const container = document.getElementById('adminSocialsList');
+            container.innerHTML = '';
+
+            const socials = appState.socials || [];
+            document.getElementById('adminSocialsBadge').innerText = socials.length;
+
+            socials.forEach((soc, idx) => {
+                const meta = PLATFORM_META[soc.platform] || PLATFORM_META.website;
+                const div = document.createElement('div');
+                div.className = 'flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/10 text-xs';
+                div.innerHTML = `
+                    <div class="flex items-center space-x-3 truncate mr-2">
+                        <i data-lucide="${meta.icon}" class="w-4 h-4 ${meta.text}"></i>
+                        <div class="truncate">
+                            <span class="font-bold text-white">${soc.title}</span>
+                            <p class="text-[10px] text-gray-400 truncate">${soc.url}</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-1 shrink-0">
+                        <button onclick="removeSocialLink(${idx})" class="p-1.5 rounded-lg text-red-400 hover:bg-red-500/20">
+                            <i data-lucide="trash-2" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+            lucide.createIcons();
+        }
+
+        function openAddSocialModal() {
+            document.getElementById('addSocialModal').classList.remove('hidden');
+        }
+        function closeAddSocialModal() {
+            document.getElementById('addSocialModal').classList.add('hidden');
+        }
+
+        function handleAddSocialSubmit(e) {
+            e.preventDefault();
+            const newSocial = {
+                id: 's_' + Date.now(),
+                platform: document.getElementById('socPlatform').value,
+                title: document.getElementById('socTitle').value,
+                subtitle: document.getElementById('socSubtitle').value,
+                url: document.getElementById('socUrl').value
+            };
+
+            appState.socials.push(newSocial);
+            renderAdminSocialsList();
+            closeAddSocialModal();
+            showToast('Соцсеть добавлена! Нажмите "Сохранить всё"');
+            document.getElementById('socTitle').value = '';
+            document.getElementById('socSubtitle').value = '';
+            document.getElementById('socUrl').value = '';
+        }
+
+        function removeSocialLink(idx) {
+            appState.socials.splice(idx, 1);
+            renderAdminSocialsList();
+        }
+
+        // Music Admin Handlers
+        function toggleMusicModeInputs() {
+            const mode = document.getElementById('admMusicMode').value;
+            document.getElementById('musicModeSpotifyInput').classList.toggle('hidden', mode !== 'spotify');
+            document.getElementById('musicModeYoutubeInput').classList.toggle('hidden', mode !== 'youtube');
+            document.getElementById('musicModeCustomInput').classList.toggle('hidden', mode !== 'custom');
+        }
+
+        function renderAdminTracksList() {
+            const container = document.getElementById('admTracksContainer');
+            container.innerHTML = '';
+
+            const tracks = appState.music.tracks || [];
+            tracks.forEach((t, idx) => {
+                const div = document.createElement('div');
+                div.className = 'p-3 rounded-xl bg-white/5 border border-white/10 space-y-2 text-xs';
+                div.innerHTML = `
+                    <div class="flex items-center justify-between">
+                        <span class="font-bold text-gray-300">Трек #${idx + 1}</span>
+                        <button onclick="removeTrackRow(${idx})" class="text-red-400 hover:text-red-300">Удалить</button>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <input type="text" value="${t.title}" onchange="appState.music.tracks[${idx}].title = this.value" placeholder="Название трека" class="bg-black/40 border border-white/10 rounded-lg p-2 text-white">
+                        <input type="text" value="${t.artist}" onchange="appState.music.tracks[${idx}].artist = this.value" placeholder="Исполнитель" class="bg-black/40 border border-white/10 rounded-lg p-2 text-white">
+                    </div>
+                    <input type="url" value="${t.cover}" onchange="appState.music.tracks[${idx}].cover = this.value" placeholder="Ссылка на обложку (URL)" class="w-full bg-black/40 border border-white/10 rounded-lg p-2 text-white">
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function addCustomTrackRow() {
+            if (!appState.music.tracks) appState.music.tracks = [];
+            appState.music.tracks.push({
+                title: "Новый трек",
+                artist: "MIRVEL",
+                cover: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=200"
+            });
+            renderAdminTracksList();
+        }
+
+        function removeTrackRow(idx) {
+            appState.music.tracks.splice(idx, 1);
+            renderAdminTracksList();
+        }
+
+        // Projects Admin Handlers
+        function renderAdminProjectsList() {
+            const container = document.getElementById('admProjectsContainer');
+            container.innerHTML = '';
+
+            const projects = appState.projects || [];
+            projects.forEach((p, idx) => {
+                const div = document.createElement('div');
+                div.className = 'p-3 rounded-xl bg-white/5 border border-white/10 space-y-2 text-xs';
+                div.innerHTML = `
+                    <div class="flex items-center justify-between">
+                        <span class="font-bold text-gray-300">Проект #${idx + 1}</span>
+                        <button onclick="removeProjectRow(${idx})" class="text-red-400 hover:text-red-300">Удалить</button>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <input type="text" value="${p.title}" onchange="appState.projects[${idx}].title = this.value" placeholder="Название проекта" class="bg-black/40 border border-white/10 rounded-lg p-2 text-white">
+                        <input type="text" value="${p.tag}" onchange="appState.projects[${idx}].tag = this.value" placeholder="Теги (например: Python)" class="bg-black/40 border border-white/10 rounded-lg p-2 text-white">
+                    </div>
+                    <input type="text" value="${p.desc}" onchange="appState.projects[${idx}].desc = this.value" placeholder="Описание проекта" class="w-full bg-black/40 border border-white/10 rounded-lg p-2 text-white">
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function addProjectRow() {
+            if (!appState.projects) appState.projects = [];
+            appState.projects.push({
+                id: 'p_' + Date.now(),
+                title: 'Новый Проект',
+                desc: 'Описание проекта...',
+                icon: 'code',
+                tag: 'Dev'
+            });
+            renderAdminProjectsList();
+        }
+
+        function removeProjectRow(idx) {
+            appState.projects.splice(idx, 1);
+            renderAdminProjectsList();
+        }
+
+        // Test Telegram Connection
+        async function testTelegramBot() {
+            const token = document.getElementById('admBotToken').value.trim();
+            const chatId = document.getElementById('admChatId').value.trim();
+
+            if (!token || !chatId) {
+                showToast('Заполните и Token, и Chat ID!', true);
+                return;
+            }
+
+            try {
+                const response = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: chatId,
+                        text: '🔔 *Тестовое сообщение с визитки MIRVEL!* Бот успешно настроен и работает.',
+                        parse_mode: 'Markdown'
+                    })
+                });
+
+                const res = await response.json();
+                if (res.ok) {
+                    showToast('Тестовое сообщение успешно отправлено в Telegram!');
+                } else {
+                    showToast(`Ошибка Telegram: ${res.description}`, true);
+                }
+            } catch (e) {
+                showToast('Ошибка при запросе к Telegram API', true);
+            }
+        }
+
+        // Change Admin Password
+        function changeAdminPassword() {
+            const newPass = document.getElementById('admNewPassword').value.trim();
+            if (newPass.length < 3) {
+                showToast('Пароль слишком короткий!', true);
+                return;
+            }
+            appState.adminPassword = newPass;
+            saveAppState();
+            document.getElementById('admNewPassword').value = '';
+            showToast('Пароль админки успешно изменён!');
+        }
+
+        // Save All Admin Settings
+        function saveAdminSettings() {
+            appState.profile.name = document.getElementById('admName').value;
+            appState.profile.role = document.getElementById('admRole').value;
+            appState.profile.avatar = document.getElementById('admAvatar').value;
+            appState.profile.bio = document.getElementById('admBio').value;
+            appState.profile.statusText = document.getElementById('admStatusText').value;
+            appState.profile.statusType = document.getElementById('admStatusType').value;
+
+            appState.music.mode = document.getElementById('admMusicMode').value;
+            appState.music.spotifyUrl = document.getElementById('admSpotifyUrl').value;
+            appState.music.youtubeUrl = document.getElementById('admYoutubeUrl').value;
+
+            if (!appState.telegramBot) appState.telegramBot = {};
+            appState.telegramBot.botToken = document.getElementById('admBotToken').value.trim();
+            appState.telegramBot.chatId = document.getElementById('admChatId').value.trim();
+
+            saveAppState();
+            closeAdminPanel();
+            showToast('Все настройки успешно сохранены!');
+        }
+
+        function resetAllDataToDefault() {
+            if (confirm('Вы уверены, что хотите сбросить все данные до начальных?')) {
+                appState = JSON.parse(JSON.stringify(INITIAL_SETTINGS));
+                saveAppState();
+                closeAdminPanel();
+                showToast('Данные сброшены до начальных');
+            }
+        }
+
+        // UTILITIES & MODALS
         function setAccent(color, name) {
             document.documentElement.style.setProperty('--accent-color', color);
             document.documentElement.style.setProperty('--accent-glow', color + '4d');
@@ -604,6 +1540,8 @@
             const bgGlow1 = document.getElementById('bgGlow1');
             bgGlow1.style.backgroundColor = color + '20';
             
+            appState.profile.accentColor = color;
+            localStorage.setItem('mirvel_app_data', JSON.stringify(appState));
             showToast(`Акцент сменен на: ${name}`);
         }
 
@@ -619,10 +1557,20 @@
             showToast('Ссылка на профиль скопирована!');
         }
 
-        function showToast(msg) {
+        function showToast(msg, isError = false) {
             const toast = document.getElementById('toast');
             const toastMsg = document.getElementById('toastMsg');
+            const toastIcon = document.getElementById('toastIcon');
+
             toastMsg.innerText = msg;
+            if (isError) {
+                toastIcon.setAttribute('data-lucide', 'alert-circle');
+                toastIcon.className = 'w-5 h-5 text-red-400';
+            } else {
+                toastIcon.setAttribute('data-lucide', 'check-circle-2');
+                toastIcon.className = 'w-5 h-5 text-brand-cyan';
+            }
+            lucide.createIcons();
             
             toast.classList.remove('translate-y-20', 'opacity-0');
             toast.classList.add('translate-y-0', 'opacity-100');
@@ -630,114 +1578,20 @@
             setTimeout(() => {
                 toast.classList.remove('translate-y-0', 'opacity-100');
                 toast.classList.add('translate-y-20', 'opacity-0');
-            }, 3000);
+            }, 3500);
         }
 
-        const tracks = [
-            {
-                title: "Cyberpunk Synthwave Mix 2026",
-                artist: "MIRVEL Collection • Lo-Fi Beats",
-                cover: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=200&auto=format&fit=crop&q=80"
-            },
-            {
-                title: "Night City Driving OST",
-                artist: "Retro Wave • Electronic Chill",
-                cover: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=200&auto=format&fit=crop&q=80"
-            }
-        ];
+        function openAddModal() { document.getElementById('addModal').classList.remove('hidden'); }
+        function closeAddModal() { document.getElementById('addModal').classList.add('hidden'); }
 
-        let isPlaying = true;
-        let isMuted = false;
-        let currentTrackIndex = 0;
-
-        function togglePlay() {
-            isPlaying = !isPlaying;
-            const playIcon = document.getElementById('playIcon');
-            const visualizer = document.getElementById('equalizerVisualizer');
-
-            if (isPlaying) {
-                playIcon.setAttribute('data-lucide', 'pause');
-                visualizer.classList.remove('paused');
-            } else {
-                playIcon.setAttribute('data-lucide', 'play');
-                visualizer.classList.add('paused');
-            }
-            lucide.createIcons();
-        }
-
-        function nextTrack() {
-            currentTrackIndex = (currentTrackIndex + 1) % tracks.length;
-            const track = tracks[currentTrackIndex];
-
-            document.getElementById('trackTitle').innerText = track.title;
-            document.getElementById('trackArtist').innerText = track.artist;
-            document.getElementById('trackCover').src = track.cover;
-
-            if (!isPlaying) togglePlay();
-            showToast(`Играет: ${track.title}`);
-        }
-
-        function toggleMute() {
-            isMuted = !isMuted;
-            const volumeIcon = document.getElementById('volumeIcon');
-
-            if (isMuted) {
-                volumeIcon.setAttribute('data-lucide', 'volume-x');
-                showToast('Звук выключен');
-            } else {
-                volumeIcon.setAttribute('data-lucide', 'volume-2');
-                showToast('Звук включен');
-            }
-            lucide.createIcons();
-        }
-
-        function seekTrack(e) {
-            const progress = document.getElementById('trackProgress');
-            const rect = e.currentTarget.getBoundingClientRect();
-            const clickPosition = (e.clientX - rect.left) / rect.width;
-            progress.style.width = `${Math.round(clickPosition * 100)}%`;
-            
-            const totalSeconds = 135;
-            const currentSec = Math.round(totalSeconds * clickPosition);
-            const mins = Math.floor(currentSec / 60);
-            const secs = currentSec % 60;
-            document.getElementById('currentTime').innerText = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
-        }
-
-        function openAddModal() {
-            document.getElementById('addModal').classList.remove('hidden');
-        }
-        function closeAddModal() {
-            document.getElementById('addModal').classList.add('hidden');
-        }
-
-        function openAnonModal() {
-            document.getElementById('anonModal').classList.remove('hidden');
-        }
-        function closeAnonModal() {
-            document.getElementById('anonModal').classList.add('hidden');
-        }
-
-        function sendAnonMessage() {
-            const text = document.getElementById('anonText').value;
-            if (!text.trim()) {
-                showToast('Введите текст сообщения');
-                return;
-            }
-            // Direct redirect to Telegram with prefilled text
-            window.open(`https://t.me/share/url?url=${encodeURIComponent('Анонимное сообщение MIRVEL:')}&text=${encodeURIComponent(text)}`, '_blank');
-            closeAnonModal();
-            document.getElementById('anonText').value = '';
-            showToast('Переходим в Telegram...');
-        }
+        function openAnonModal() { document.getElementById('anonModal').classList.remove('hidden'); }
+        function closeAnonModal() { document.getElementById('anonModal').classList.hidden = true; document.getElementById('anonModal').classList.add('hidden'); }
 
         function openExportModal() {
-            document.getElementById('jsonOutput').value = JSON.stringify(collectionData, null, 2);
+            document.getElementById('jsonOutput').value = JSON.stringify(appState, null, 2);
             document.getElementById('exportModal').classList.remove('hidden');
         }
-        function closeExportModal() {
-            document.getElementById('exportModal').classList.add('hidden');
-        }
+        function closeExportModal() { document.getElementById('exportModal').classList.add('hidden'); }
 
         function copyJsonCode() {
             const jsonText = document.getElementById('jsonOutput');
@@ -746,9 +1600,21 @@
             showToast('JSON скопирован в буфер обмена!');
         }
 
-        // Initial render on load
+        function applyImportJson() {
+            try {
+                const parsed = JSON.parse(document.getElementById('jsonOutput').value);
+                appState = parsed;
+                saveAppState();
+                closeExportModal();
+                showToast('Данные успешно импортированы!');
+            } catch (e) {
+                showToast('Неверный формат JSON!', true);
+            }
+        }
+
+        // Initialize App on Window Load
         window.onload = function() {
-            renderCollection();
+            renderAll();
         };
     </script>
 </body>
