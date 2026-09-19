@@ -1,371 +1,755 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" class="dark">
 <head>
-<meta charset="UTF-8">
-<title>Save Yaroslav Lomakov</title>
-
-<style>
-body {
-    margin: 0;
-    padding: 40px 0;
-    font-family: Arial, Helvetica, sans-serif;
-    color: #f0f0f0;
-}
-
-body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    background:
-        linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)),
-        url("background.jpg") center / cover no-repeat;
-    filter: blur(8px);
-    transform: scale(1.06);
-    z-index: -1;
-}
-
-.container {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 30px;
-    background: rgba(0,0,0,0.65);
-    border-radius: 14px;
-    box-shadow: 0 25px 70px rgba(0,0,0,0.8);
-}
-
-.title {
-    font-family: Impact, Arial Black, sans-serif;
-    font-size: 48px;
-    text-align: center;
-    margin-bottom: 25px;
-}
-
-.section-title {
-    font-family: Impact, Arial Black, sans-serif;
-    font-size: 26px;
-    margin: 40px 0 20px;
-    border-bottom: 2px solid #555;
-    padding-bottom: 6px;
-}
-
-.main-photo {
-    display: block;
-    max-width: 280px;
-    margin: 0 auto 25px;
-    border-radius: 10px;
-    border: 2px solid #777;
-}
-
-.text {
-    font-size: 16px;
-    line-height: 1.6;
-    background: rgba(0,0,0,0.45);
-    padding: 20px;
-    border-radius: 8px;
-}
-
-.gallery {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px,1fr));
-    gap: 20px;
-}
-
-.gallery img {
-    width: 100%;
-    border-radius: 8px;
-    border: 1px solid #555;
-}
-
-.gallery p {
-    font-size: 14px;
-    background: rgba(0,0,0,0.45);
-    padding: 12px;
-    border-radius: 6px;
-}
-
-/* DONATE */
-.donate-wrapper {
-    margin-top: 60px;
-    text-align: center;
-}
-
-.donate-btn {
-    display: inline-block;
-    padding: 18px 50px;
-    font-family: Impact, Arial Black, sans-serif;
-    font-size: 32px;
-    color: #fff;
-    text-decoration: none;
-    background: linear-gradient(135deg, #b30000, #ff0000);
-    border-radius: 50px;
-    box-shadow: 0 0 30px rgba(255,0,0,0.6);
-}
-
-/* ===== СПОНСОРЫ ===== */
-
-.sponsor-panel {
-    position: fixed;
-    top: 0;
-    right: 0;
-    width: 320px;
-    height: 100%;
-    background: rgba(0,0,0,0.95);
-    padding: 25px;
-    overflow-y: auto;
-    transform: translateX(100%);
-    transition: transform .4s ease;
-    z-index: 6;
-}
-
-.sponsor-panel.open {
-    transform: translateX(0);
-}
-
-.sponsor-btn {
-    position: fixed;
-    top: 50%;
-    right: 20px;
-    transform: translateY(-50%);
-    padding: 14px 22px;
-    font-family: Impact, Arial Black, sans-serif;
-    font-size: 20px;
-    background: linear-gradient(135deg, #333, #000);
-    border-radius: 30px;
-    cursor: pointer;
-    box-shadow: 0 0 20px rgba(255,255,255,0.15);
-    z-index: 7;
-    transition: transform .4s ease;
-}
-
-/* кнопка уезжает вместе с панелью, но с зазором */
-.sponsor-btn.move {
-    transform: translate(-360px, -50%);
-}
-
-.sponsor {
-    margin-bottom: 30px;
-}
-
-.sponsor img {
-    width: 100%;
-    border-radius: 8px;
-    border: 1px solid #555;
-    margin-bottom: 10px;
-}
-
-.sponsor-name {
-    font-family: Impact, Arial Black, sans-serif;
-    font-size: 18px;
-    margin-bottom: 6px;
-}
-</style>
-</head>
-
-<body>
-
-<div class="container">
-
-<div class="title">SAVE YAROSLAV LOMAKOV</div>
-
-<img src="photo.jpg" class="main-photo">
-
-<div class="text">
-Ярослав Ломаков — обычный парень, которому сейчас особенно важна поддержка.
-Этот сайт создан, чтобы показать: он не один.
-</div>
-
-<div class="section-title">ФОТО</div>
-<div class="gallery">
-    <img src="photo1.jpg">
-    <img src="photo2.jpg">
-    <img src="photo3.jpg">
-    <img src="photo4.jpg">
-</div>
-
-<div class="section-title">ДРУЗЬЯ О ЯРОСЛАВЕ</div>
-<div class="gallery">
-
-    <div>
-        <img src="ivan.jpg">
-        <p><strong>Иван Зоуви</strong><br>Всегда рядом в трудные моменты.</p>
-    </div>
-
-    <div>
-        <img src="slava.jpg">
-        <p><strong>Слава Мирвел</strong><br>Поддержка без лишних слов.</p>
-    </div>
-
-    <div>
-        <img src="adel.jpg">
-        <p><strong>Адель Скалка</strong><br>Умеет поддержать и сказать нужные слова.</p>
-    </div>
-
-    <div>
-        <img src="sergey.jpg">
-        <p><strong>СерГей</strong><br>Надёжный человек, который не бросает своих.</p>
-    </div>
-
-</div>
-
-<div class="donate-wrapper">
-    <a class="donate-btn" href="https://t.me/mirveel" target="_blank">DONATE</a>
-    <p style="opacity:.8;margin-top:15px;">Помочь Ярославу напрямую</p>
-</div>
-
-</div>
-
-<!-- ПАНЕЛЬ СПОНСОРОВ -->
-<div class="sponsor-panel" id="sponsors">
-    <div class="section-title">СПОНСОРЫ</div>
-
-    <div class="sponsor">
-        <img src="sponsor1.jpg">
-        <div class="sponsor-name">Глеб СасалВрот</div>
-        <p>Поддержал проект без лишних вопросов.</p>
-        <p><strong>Донат:</strong> $420</p>
-    </div>
-
-    <div class="sponsor">
-        <img src="sponsor2.jpg">
-        <div class="sponsor-name">Джефри Эпштейнович</div>
-        <p>Анонимный меценат с иронией и стилем.</p>
-        <p><strong>Донат:</strong> $666</p>
-    </div>
-
-    <div class="sponsor">
-        <img src="sponsor3.jpg">
-        <div class="sponsor-name">Володимир Зеленский</div>
-        <p>Жест солидарности и человеческой поддержки.</p>
-        <p><strong>Донат:</strong> $1337</p>
-    </div>
-
-    <!-- НОВЫЙ СПОНСОР -->
-    <div class="sponsor">
-        <img src="sponsor4.jpg">
-        <div class="sponsor-name">Нанка НеоФурри</div>
-        <p>Поддержка от яркой личности с большим сердцем и своим стилем.</p>
-        <p><strong>Донат:</strong> $888</p>
-    </div>
-</div>
-
-<div class="sponsor-btn" id="sponsorBtn">СПОНСОРЫ</div>
-
-<script>
-const panel = document.getElementById("sponsors");
-const btn = document.getElementById("sponsorBtn");
-
-btn.addEventListener("click", () => {
-    panel.classList.toggle("open");
-    btn.classList.toggle("move");
-});
-</script>
-
-<!-- КНОПКА "АЛЁЁЁ" + ВИДЕО -->
-<style>
-.ale-btn {
-    position: fixed;
-    bottom: 25px;
-    left: 25px;
-    z-index: 999;
-    padding: 16px 28px;
-    font-family: Impact, Arial Black, sans-serif;
-    font-size: 26px;
-    color: #fff;
-    background: linear-gradient(135deg, #ff00cc, #3333ff);
-    border-radius: 40px;
-    cursor: pointer;
-    box-shadow: 0 0 25px rgba(255,0,200,0.7);
-    user-select: none;
-}
-
-.ale-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.9);
-    display: none;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-}
-
-.ale-overlay video {
-    max-width: 90%;
-    max-height: 90%;
-    border-radius: 12px;
-    box-shadow: 0 0 40px rgba(0,0,0,0.8);
-}
-</style>
-
-<div class="ale-btn" id="aleBtn">Мэм</div>
-
-<div class="ale-overlay" id="aleOverlay">
-    <video id="aleVideo" controls>
-        <source src="video.mp4" type="video/mp4">
-        Ваш браузер не поддерживает видео.
-    </video>
-</div>
-
-<script>
-const aleBtn = document.getElementById("aleBtn");
-const overlay = document.getElementById("aleOverlay");
-const video = document.getElementById("aleVideo");
-
-aleBtn.addEventListener("click", () => {
-    overlay.style.display = "flex";
-    video.currentTime = 0;
-    video.play();
-});
-
-overlay.addEventListener("click", () => {
-    video.pause();
-    overlay.style.display = "none";
-});
-</script>
-    
-<!-- ===== КОММЕНТАРИИ / ЧАТ ===== -->
-<style>
-.comments-wrapper {
-    max-width: 900px;
-    margin: 60px auto 0;
-    padding: 30px;
-    background: rgba(0,0,0,0.65);
-    border-radius: 14px;
-    box-shadow: 0 25px 70px rgba(0,0,0,0.8);
-}
-
-.comments-title {
-    font-family: Impact, Arial Black, sans-serif;
-    font-size: 28px;
-    margin-bottom: 20px;
-    text-align: center;
-    border-bottom: 2px solid #555;
-    padding-bottom: 8px;
-}
-
-.comments-note {
-    text-align: center;
-    font-size: 14px;
-    opacity: 0.7;
-    margin-bottom: 25px;
-}
-</style>
-
-<div class="comments-wrapper">
-    <div class="comments-title">ЧАТ / КОММЕНТАРИИ</div>
-    <div class="comments-note">
-        Чтобы написать сообщение, нужен GitHub-аккаунт
-    </div>
-
-    <script src="https://utteranc.es/client.js"
-            repo="astrom1rvel-hue/saveziplomchik-comments"
-            issue-term="pathname"
-            theme="github-dark"
-            crossorigin="anonymous"
-            async>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MIRVEL | Личная Визитка & Трекер Коллекции</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            cyan: '#00f0ff',
+                            purple: '#7000ff',
+                            pink: '#ff007f',
+                            green: '#00ff66',
+                            amber: '#ffaa00'
+                        }
+                    }
+                }
+            }
+        }
     </script>
-</div>
-<!-- ===== /КОММЕНТАРИИ ===== -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
 
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #090a0f;
+            color: #f3f4f6;
+            background-image: 
+                radial-gradient(circle at 15% 15%, rgba(0, 240, 255, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 85% 85%, rgba(112, 0, 255, 0.08) 0%, transparent 40%),
+                linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 100%, 30px 30px, 30px 30px;
+        }
+
+        .mono-font {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .glass-card {
+            background: rgba(18, 20, 29, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .glass-card:hover {
+            border-color: var(--accent-color, rgba(0, 240, 255, 0.4));
+        }
+
+        :root {
+            --accent-color: #00f0ff;
+            --accent-glow: rgba(0, 240, 255, 0.3);
+        }
+
+        .accent-text { color: var(--accent-color); }
+        .accent-bg { background-color: var(--accent-color); }
+        .accent-border { border-color: var(--accent-color); }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #090a0f;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1f293d;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-color);
+        }
+
+        .eq-bar {
+            height: 100%;
+            width: 3px;
+            background-color: var(--accent-color);
+            border-radius: 2px;
+            transform-origin: bottom;
+            animation: eqAnim 1s ease-in-out infinite alternate;
+        }
+        .eq-bar:nth-child(1) { animation-delay: 0.1s; }
+        .eq-bar:nth-child(2) { animation-delay: 0.4s; }
+        .eq-bar:nth-child(3) { animation-delay: 0.2s; }
+        .eq-bar:nth-child(4) { animation-delay: 0.5s; }
+
+        @keyframes eqAnim {
+            0% { transform: scaleY(0.2); }
+            100% { transform: scaleY(1.0); }
+        }
+
+        .paused .eq-bar {
+            animation-play-state: paused;
+            transform: scaleY(0.15);
+        }
+    </style>
+</head>
+<body class="min-h-screen py-8 px-4 sm:px-6 flex flex-col justify-between items-center relative overflow-x-hidden">
+
+    <div id="bgGlow1" class="fixed -top-40 -left-40 w-96 h-96 bg-brand-cyan/10 rounded-full blur-3xl pointer-events-none"></div>
+    <div id="bgGlow2" class="fixed -bottom-40 -right-40 w-96 h-96 bg-brand-purple/10 rounded-full blur-3xl pointer-events-none"></div>
+
+    <main class="w-full max-w-xl mx-auto space-y-6 z-10">
+
+        <div class="flex items-center justify-between glass-card px-4 py-2.5 rounded-2xl">
+            <div class="flex items-center space-x-2">
+                <span class="text-xs font-semibold uppercase tracking-widest text-gray-400 mono-font">Тема:</span>
+                <div class="flex items-center space-x-1.5">
+                    <button onclick="setAccent('#00f0ff', 'Неоновый Циан')" title="Циан" class="w-5 h-5 rounded-full bg-brand-cyan hover:scale-125 transition-transform ring-2 ring-white/10"></button>
+                    <button onclick="setAccent('#7000ff', 'Фиолетовый')" title="Фиолетовый" class="w-5 h-5 rounded-full bg-brand-purple hover:scale-125 transition-transform ring-2 ring-white/10"></button>
+                    <button onclick="setAccent('#00ff66', 'Изумрудный')" title="Зеленый" class="w-5 h-5 rounded-full bg-brand-green hover:scale-125 transition-transform ring-2 ring-white/10"></button>
+                    <button onclick="setAccent('#ffaa00', 'Янтарь')" title="Янтарь" class="w-5 h-5 rounded-full bg-brand-amber hover:scale-125 transition-transform ring-2 ring-white/10"></button>
+                </div>
+            </div>
+            
+            <button onclick="shareProfile()" class="flex items-center space-x-1.5 text-xs text-gray-300 hover:text-white glass-card px-3 py-1.5 rounded-xl transition-colors hover:border-gray-500">
+                <i data-lucide="share-2" class="w-3.5 h-3.5 accent-text"></i>
+                <span class="mono-font">Поделиться</span>
+            </button>
+        </div>
+
+        <div class="glass-card rounded-3xl p-6 text-center relative overflow-hidden group">
+            <div class="absolute top-0 left-0 w-full h-1.5 accent-bg"></div>
+            
+            <div class="relative w-28 h-28 mx-auto mb-4">
+                <div class="absolute inset-0 rounded-full accent-bg blur-md opacity-50 group-hover:opacity-80 transition-opacity"></div>
+                <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=300&auto=format&fit=crop&q=80" 
+                     alt="MIRVEL Аватар" 
+                     class="relative w-full h-full object-cover rounded-full border-2 border-white/20 p-1 bg-gray-900"
+                     onerror="this.src='https://placehold.co/200x200/181824/00f0ff?text=MIRVEL'">
+                
+                <div class="absolute bottom-1 right-1 flex items-center bg-gray-900/90 border border-white/10 rounded-full px-2 py-0.5 space-x-1 shadow-lg" title="Онлайн">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 absolute"></span>
+                </div>
+            </div>
+
+            <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-white mb-1 flex items-center justify-center gap-2">
+                MIRVEL <i data-lucide="badge-check" class="w-5 h-5 text-brand-cyan fill-brand-cyan/20"></i>
+            </h1>
+            <p class="text-xs sm:text-sm text-gray-400 font-medium mb-3 mono-font">
+                Разработчик ботов • Коллекционер • Геймер
+            </p>
+            <p class="text-sm text-gray-300 max-w-md mx-auto leading-relaxed mb-4">
+                Создаю полезную автоматизацию (например, <span class="accent-text font-semibold">Парсер OLX</span>), собираю коллекции CD, винила и редких игр.
+            </p>
+
+            <div class="inline-flex items-center space-x-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs text-gray-300">
+                <i data-lucide="terminal" class="w-3.5 h-3.5 accent-text"></i>
+                <span>В процессе: <strong class="text-white">TG Бот v2.0 & Парсеры</strong></span>
+            </div>
+        </div>
+
+        <div class="space-y-3">
+            <h2 class="text-xs uppercase font-bold tracking-wider text-gray-400 px-1 mono-font flex items-center gap-2">
+                <i data-lucide="compass" class="w-3.5 h-3.5 accent-text"></i> Мои Соцсети и Ссылки
+            </h2>
+
+            <a href="https://t.me" target="_blank" class="glass-card p-4 rounded-2xl flex items-center justify-between group transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
+                <div class="flex items-center space-x-3.5">
+                    <div class="w-10 h-10 rounded-xl bg-sky-500/10 border border-sky-500/20 flex items-center justify-center text-sky-400 group-hover:scale-110 transition-transform">
+                        <i data-lucide="send" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-bold text-white group-hover:text-sky-400 transition-colors">Telegram Канал</h3>
+                        <p class="text-xs text-gray-400">Обновления ботов, находки и мысли</p>
+                    </div>
+                </div>
+                <i data-lucide="arrow-up-right" class="w-4 h-4 text-gray-500 group-hover:text-white transition-all"></i>
+            </a>
+
+            <!-- Anonymous Message Trigger -->
+            <button onclick="openAnonModal()" class="w-full glass-card p-4 rounded-2xl flex items-center justify-between group transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg text-left relative overflow-hidden">
+                <div class="absolute top-0 right-0 px-2.5 py-0.5 bg-brand-pink/20 border-b border-l border-brand-pink/30 rounded-bl-xl text-[10px] font-bold text-brand-pink mono-font">АНОНИМНО</div>
+                <div class="flex items-center space-x-3.5">
+                    <div class="w-10 h-10 rounded-xl bg-pink-500/10 border border-pink-500/20 flex items-center justify-center text-pink-400 group-hover:scale-110 transition-transform">
+                        <i data-lucide="message-square-plus" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-bold text-white group-hover:text-pink-400 transition-colors">Анонимное сообщение в ТГ</h3>
+                        <p class="text-xs text-gray-400">Задать вопрос или отправить фидбек</p>
+                    </div>
+                </div>
+                <i data-lucide="chevron-right" class="w-4 h-4 text-gray-500 group-hover:text-white transition-all"></i>
+            </button>
+
+            <a href="https://youtube.com" target="_blank" class="glass-card p-4 rounded-2xl flex items-center justify-between group transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
+                <div class="flex items-center space-x-3.5">
+                    <div class="w-10 h-10 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-400 group-hover:scale-110 transition-transform">
+                        <i data-lucide="youtube" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-bold text-white group-hover:text-red-400 transition-colors">YouTube Канал</h3>
+                        <p class="text-xs text-gray-400">Обзоры техники, видео и стримы</p>
+                    </div>
+                </div>
+                <i data-lucide="arrow-up-right" class="w-4 h-4 text-gray-500 group-hover:text-white transition-all"></i>
+            </a>
+
+            <a href="https://github.com" target="_blank" class="glass-card p-4 rounded-2xl flex items-center justify-between group transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
+                <div class="flex items-center space-x-3.5">
+                    <div class="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 group-hover:scale-110 transition-transform">
+                        <i data-lucide="github" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-bold text-white group-hover:text-purple-400 transition-colors">GitHub Репозиторий</h3>
+                        <p class="text-xs text-gray-400">Исходники ботов, скрипты и парсеры</p>
+                    </div>
+                </div>
+                <i data-lucide="arrow-up-right" class="w-4 h-4 text-gray-500 group-hover:text-white transition-all"></i>
+            </a>
+        </div>
+
+        <div class="glass-card rounded-3xl p-5 relative overflow-hidden border border-white/10">
+            <div class="flex items-center justify-between mb-3">
+                <div class="flex items-center space-x-2">
+                    <i data-lucide="disc" class="w-4 h-4 accent-text animate-spin" style="animation-duration: 8s;"></i>
+                    <span class="text-xs font-bold uppercase tracking-wider text-gray-300 mono-font">Любимая музыка</span>
+                </div>
+                <div id="equalizerVisualizer" class="h-4 flex items-end space-x-1">
+                    <div class="eq-bar"></div>
+                    <div class="eq-bar"></div>
+                    <div class="eq-bar"></div>
+                    <div class="eq-bar"></div>
+                </div>
+            </div>
+
+            <div class="flex items-center space-x-4">
+                <div class="relative w-16 h-16 rounded-2xl overflow-hidden shrink-0 group">
+                    <img id="trackCover" src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=200&auto=format&fit=crop&q=80" 
+                         alt="Обложка трека" 
+                         class="w-full h-full object-cover transition-transform group-hover:scale-105"
+                         onerror="this.src='https://placehold.co/100x100/1e1e2d/ffffff?text=Synth'">
+                    <button id="playPauseBtn" onclick="togglePlay()" class="absolute inset-0 bg-black/40 flex items-center justify-center text-white opacity-90 hover:opacity-100 transition-opacity">
+                        <i id="playIcon" data-lucide="pause" class="w-6 h-6 fill-white"></i>
+                    </button>
+                </div>
+
+                <div class="flex-1 min-w-0">
+                    <h4 id="trackTitle" class="text-sm font-bold text-white truncate">Cyberpunk Synthwave Mix</h4>
+                    <p id="trackArtist" class="text-xs text-gray-400 truncate mb-2">MIRVEL Collection • Lo-Fi Beats</p>
+                    
+                    <div class="w-full bg-white/10 rounded-full h-1.5 overflow-hidden cursor-pointer" onclick="seekTrack(event)">
+                        <div id="trackProgress" class="accent-bg h-full w-2/5 rounded-full transition-all duration-300"></div>
+                    </div>
+                    <div class="flex justify-between text-[10px] text-gray-500 font-mono mt-1">
+                        <span id="currentTime">0:48</span>
+                        <span id="totalTime">2:15</span>
+                    </div>
+                </div>
+
+                <div class="flex flex-col space-y-1">
+                    <button onclick="nextTrack()" class="p-1.5 rounded-lg hover:bg-white/5 text-gray-400 hover:text-white transition-colors" title="Следующий трек">
+                        <i data-lucide="skip-forward" class="w-4 h-4"></i>
+                    </button>
+                    <button id="muteBtn" onclick="toggleMute()" class="p-1.5 rounded-lg hover:bg-white/5 text-gray-400 hover:text-white transition-colors" title="Звук">
+                        <i id="volumeIcon" data-lucide="volume-2" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="collection" class="space-y-4 pt-2">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div>
+                    <h2 class="text-xs uppercase font-bold tracking-wider text-gray-400 px-1 mono-font flex items-center gap-2">
+                        <i data-lucide="library" class="w-3.5 h-3.5 accent-text"></i> Моя Коллекция (<span id="totalCount">0</span>)
+                    </h2>
+                </div>
+                
+                <div class="flex items-center space-x-2">
+                    <button onclick="openAddModal()" class="px-3 py-1.5 rounded-xl accent-bg text-black font-bold text-xs hover:opacity-90 transition-opacity flex items-center gap-1">
+                        <i data-lucide="plus" class="w-4 h-4"></i>
+                        <span>Добавить</span>
+                    </button>
+                    <button onclick="openExportModal()" class="px-2.5 py-1.5 rounded-xl bg-white/10 text-gray-300 hover:text-white font-medium text-xs transition-colors" title="Экспорт/Импорт в JSON">
+                        <i data-lucide="code" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Filter tabs -->
+            <div class="flex items-center space-x-1 bg-white/5 p-1 rounded-xl border border-white/5 text-xs overflow-x-auto">
+                <button onclick="filterCollection('all')" class="col-filter-btn active px-3 py-1 rounded-lg text-white font-medium transition-all shrink-0" data-filter="all">Все</button>
+                <button onclick="filterCollection('cd')" class="col-filter-btn px-3 py-1 rounded-lg text-gray-400 hover:text-white font-medium transition-all shrink-0" data-filter="cd">CD Диски</button>
+                <button onclick="filterCollection('vinyl')" class="col-filter-btn px-3 py-1 rounded-lg text-gray-400 hover:text-white font-medium transition-all shrink-0" data-filter="vinyl">Винил</button>
+                <button onclick="filterCollection('games')" class="col-filter-btn px-3 py-1 rounded-lg text-gray-400 hover:text-white font-medium transition-all shrink-0" data-filter="games">Игры</button>
+                <button onclick="filterCollection('wishlist')" class="col-filter-btn px-3 py-1 rounded-lg text-gray-400 hover:text-white font-medium transition-all shrink-0" data-filter="wishlist">Вишлист</button>
+            </div>
+
+            <!-- Collection Cards Grid -->
+            <div id="collectionGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <!-- Dynamically populated via JavaScript -->
+            </div>
+        </div>
+
+        <footer class="pt-6 border-t border-white/5 text-center text-xs text-gray-500 space-y-2">
+            <p>© 2026 MIRVEL • Создано для GitHub Pages</p>
+            <div class="flex items-center justify-center space-x-4 text-gray-400">
+                <a href="https://t.me" target="_blank" class="hover:text-white transition-colors">Telegram</a>
+                <span>•</span>
+                <a href="https://github.com" target="_blank" class="hover:text-white transition-colors">GitHub</a>
+                <span>•</span>
+                <a href="https://youtube.com" target="_blank" class="hover:text-white transition-colors">YouTube</a>
+            </div>
+        </footer>
+
+    </main>
+
+    <!-- Toast Popup -->
+    <div id="toast" class="fixed bottom-6 right-6 transform translate-y-20 opacity-0 transition-all duration-300 z-50 glass-card border border-brand-cyan/40 px-4 py-3 rounded-2xl shadow-2xl flex items-center space-x-3 pointer-events-none">
+        <i data-lucide="check-circle-2" class="w-5 h-5 text-brand-cyan"></i>
+        <span id="toastMsg" class="text-sm font-medium text-white">Ссылка скопирована!</span>
+    </div>
+
+    <!-- Modal: Add Item to Collection -->
+    <div id="addModal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div class="glass-card w-full max-w-md rounded-3xl p-6 border border-white/10 relative">
+            <button onclick="closeAddModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white p-1 rounded-full bg-white/5">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+            
+            <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                <i data-lucide="plus-circle" class="w-5 h-5 accent-text"></i> Добавить в коллекцию
+            </h3>
+
+            <form id="addItemForm" onsubmit="handleAddItem(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-gray-300 mb-1">Название предмета *</label>
+                    <input type="text" id="itemTitle" required placeholder="Например: Cyberpunk 2077 или Album Name" class="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-brand-cyan">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-gray-300 mb-1">Исполнитель / Платформа *</label>
+                    <input type="text" id="itemSubtitle" required placeholder="Например: PS5, PC или Исполнитель" class="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-brand-cyan">
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-300 mb-1">Категория</label>
+                        <select id="itemCategory" class="w-full bg-gray-900 border border-white/10 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-brand-cyan">
+                            <option value="cd">CD Диск</option>
+                            <option value="vinyl">Винил</option>
+                            <option value="games">Игра</option>
+                            <option value="other">Другое</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-300 mb-1">Статус</label>
+                        <select id="itemStatus" class="w-full bg-gray-900 border border-white/10 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-brand-cyan">
+                            <option value="owned">В наличии</option>
+                            <option value="shipping">В пути</option>
+                            <option value="wishlist">В вишлисте</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-gray-300 mb-1">Ссылка на картинку (необязательно)</label>
+                    <input type="url" id="itemCover" placeholder="https://images.unsplash.com/..." class="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-brand-cyan">
+                </div>
+
+                <div class="flex justify-end space-x-3 pt-2">
+                    <button type="button" onclick="closeAddModal()" class="px-4 py-2 rounded-xl bg-white/10 text-xs font-semibold text-gray-300 hover:bg-white/20 transition-colors">Отмена</button>
+                    <button type="submit" class="px-4 py-2 rounded-xl accent-bg text-xs font-bold text-black hover:opacity-90 transition-opacity">Сохранить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: Anonymous TG Message -->
+    <div id="anonModal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div class="glass-card w-full max-w-md rounded-3xl p-6 border border-white/10 relative">
+            <button onclick="closeAnonModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white p-1 rounded-full bg-white/5">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+            
+            <h3 class="text-lg font-bold text-white mb-2 flex items-center gap-2">
+                <i data-lucide="message-square" class="w-5 h-5 text-brand-pink"></i> Анонимное сообщение
+            </h3>
+            <p class="text-xs text-gray-400 mb-4">Отправить анонимное сообщение в Telegram-бота или личку.</p>
+
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-gray-300 mb-1">Твое сообщение</label>
+                    <textarea id="anonText" rows="4" placeholder="Напиши что угодно..." class="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-brand-pink resize-none"></textarea>
+                </div>
+
+                <div class="flex justify-end space-x-3">
+                    <button onclick="closeAnonModal()" class="px-4 py-2 rounded-xl bg-white/10 text-xs font-semibold text-gray-300 hover:bg-white/20 transition-colors">Отмена</button>
+                    <button onclick="sendAnonMessage()" class="px-4 py-2 rounded-xl bg-brand-pink text-xs font-bold text-white hover:opacity-90 transition-opacity flex items-center gap-1.5">
+                        <i data-lucide="send" class="w-3.5 h-3.5"></i>
+                        <span>Отправить в TG</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: JSON Export / Import -->
+    <div id="exportModal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div class="glass-card w-full max-w-md rounded-3xl p-6 border border-white/10 relative">
+            <button onclick="closeExportModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white p-1 rounded-full bg-white/5">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+            
+            <h3 class="text-lg font-bold text-white mb-2 flex items-center gap-2">
+                <i data-lucide="code" class="w-5 h-5 accent-text"></i> Данные Коллекции (JSON)
+            </h3>
+            <p class="text-xs text-gray-400 mb-3">Скопируй этот код и вставь его в переменную <code class="mono-font accent-text">DEFAULT_COLLECTION</code> в файле index.html на GitHub, чтобы сохранить коллекцию навсегда!</p>
+
+            <textarea id="jsonOutput" rows="6" readonly class="w-full bg-black/50 border border-white/10 rounded-xl p-3 text-xs text-brand-cyan mono-font focus:outline-none resize-none"></textarea>
+
+            <div class="flex justify-end space-x-3 mt-4">
+                <button onclick="copyJsonCode()" class="px-4 py-2 rounded-xl accent-bg text-xs font-bold text-black hover:opacity-90 transition-opacity flex items-center gap-1.5">
+                    <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                    <span>Скопировать JSON</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        // Default Collection Data (Used as seed)
+        const DEFAULT_COLLECTION = [
+            {
+                id: '1',
+                title: 'Cyberpunk 2077 Collector Discs',
+                subtitle: 'PS5 • Физическое издание',
+                category: 'games',
+                status: 'owned',
+                cover: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=500&auto=format&fit=crop&q=80'
+            },
+            {
+                id: '2',
+                title: 'Random Access Memories Vinyl',
+                subtitle: 'Daft Punk • 2xLP Vinyl',
+                category: 'vinyl',
+                status: 'owned',
+                cover: 'https://images.unsplash.com/photo-1539185441755-769473a23570?w=500&auto=format&fit=crop&q=80'
+            },
+            {
+                id: '3',
+                title: 'The Prodigy - Fat of the Land',
+                subtitle: 'Audio CD Album 1997',
+                category: 'cd',
+                status: 'owned',
+                cover: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=500&auto=format&fit=crop&q=80'
+            },
+            {
+                id: '4',
+                title: 'Half-Life 2 Big Box Edition',
+                subtitle: 'PC • Ретро бокс',
+                category: 'games',
+                status: 'wishlist',
+                cover: 'https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=500&auto=format&fit=crop&q=80'
+            }
+        ];
+
+        // Load collection from localStorage or default
+        let collectionData = JSON.parse(localStorage.getItem('mirvel_collection')) || DEFAULT_COLLECTION;
+        let currentFilter = 'all';
+
+        // Save collection
+        function saveCollection() {
+            localStorage.setItem('mirvel_collection', JSON.stringify(collectionData));
+            renderCollection();
+        }
+
+        // Render Collection Cards
+        function renderCollection() {
+            const grid = document.getElementById('collectionGrid');
+            grid.innerHTML = '';
+
+            const filtered = collectionData.filter(item => {
+                if (currentFilter === 'all') return true;
+                if (currentFilter === 'wishlist') return item.status === 'wishlist';
+                return item.category === currentFilter;
+            });
+
+            document.getElementById('totalCount').innerText = collectionData.length;
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-1 sm:col-span-2 glass-card rounded-2xl p-8 text-center text-gray-400 space-y-2">
+                        <i data-lucide="package-open" class="w-8 h-8 mx-auto text-gray-500"></i>
+                        <p class="text-xs">В этой категории пока ничего нет.</p>
+                    </div>
+                `;
+                lucide.createIcons();
+                return;
+            }
+
+            filtered.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'glass-card rounded-2xl overflow-hidden group flex flex-col justify-between transition-all duration-300 hover:border-white/30';
+                
+                // Status tag design
+                let statusBadge = '<span class="bg-emerald-500/80 text-black font-bold">В наличии</span>';
+                if (item.status === 'shipping') statusBadge = '<span class="bg-amber-500/80 text-black font-bold">В пути</span>';
+                if (item.status === 'wishlist') statusBadge = '<span class="bg-pink-500/80 text-white font-bold">В вишлисте</span>';
+
+                // Category tag
+                let catName = 'Предмет';
+                if (item.category === 'cd') catName = 'CD Диск';
+                if (item.category === 'vinyl') catName = 'Винил';
+                if (item.category === 'games') catName = 'Игра';
+
+                const defaultImg = `https://placehold.co/400x200/111827/00f0ff?text=${encodeURIComponent(item.title)}`;
+
+                card.innerHTML = `
+                    <div class="relative h-36 overflow-hidden bg-gray-900">
+                        <img src="${item.cover || defaultImg}" 
+                             alt="${item.title}" 
+                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                             onerror="this.src='${defaultImg}'">
+                        <div class="absolute top-2 left-2 text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-md mono-font">
+                            ${statusBadge}
+                        </div>
+                        <button onclick="deleteItem('${item.id}')" class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 p-1.5 rounded-lg bg-black/60 text-red-400 hover:text-red-300 transition-all">
+                            <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                        </button>
+                    </div>
+                    <div class="p-4 flex-1 flex flex-col justify-between">
+                        <div>
+                            <h3 class="text-sm font-bold text-white group-hover:text-brand-cyan transition-colors">${item.title}</h3>
+                            <p class="text-xs text-gray-400 mt-0.5">${item.subtitle}</p>
+                        </div>
+                        <div class="mt-3 pt-2 border-t border-white/5 flex items-center justify-between text-[10px] text-gray-500 mono-font">
+                            <span>${catName}</span>
+                            <span class="accent-text">ID: #${item.id.slice(-4)}</span>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+
+            lucide.createIcons();
+        }
+
+        // Add Item Form Handler
+        function handleAddItem(e) {
+            e.preventDefault();
+            const title = document.getElementById('itemTitle').value;
+            const subtitle = document.getElementById('itemSubtitle').value;
+            const category = document.getElementById('itemCategory').value;
+            const status = document.getElementById('itemStatus').value;
+            const cover = document.getElementById('itemCover').value;
+
+            const newItem = {
+                id: Date.now().toString(),
+                title,
+                subtitle,
+                category,
+                status,
+                cover
+            };
+
+            collectionData.unshift(newItem);
+            saveCollection();
+            closeAddModal();
+            showToast('Предмет успешно добавлен!');
+            document.getElementById('addItemForm').reset();
+        }
+
+        // Delete Item
+        function deleteItem(id) {
+            collectionData = collectionData.filter(item => item.id !== id);
+            saveCollection();
+            showToast('Предмет удален из коллекции');
+        }
+
+        // Filter Collection
+        function filterCollection(category) {
+            currentFilter = category;
+            const btns = document.querySelectorAll('.col-filter-btn');
+            btns.forEach(btn => {
+                if (btn.getAttribute('data-filter') === category) {
+                    btn.classList.add('bg-white/20', 'text-white', 'active');
+                    btn.classList.remove('text-gray-400');
+                } else {
+                    btn.classList.remove('bg-white/20', 'text-white', 'active');
+                    btn.classList.add('text-gray-400');
+                }
+            });
+            renderCollection();
+        }
+
+        function setAccent(color, name) {
+            document.documentElement.style.setProperty('--accent-color', color);
+            document.documentElement.style.setProperty('--accent-glow', color + '4d');
+            
+            const bgGlow1 = document.getElementById('bgGlow1');
+            bgGlow1.style.backgroundColor = color + '20';
+            
+            showToast(`Акцент сменен на: ${name}`);
+        }
+
+        function shareProfile() {
+            const dummyUrl = window.location.href;
+            const tempInput = document.createElement('input');
+            tempInput.value = dummyUrl;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+
+            showToast('Ссылка на профиль скопирована!');
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toastMsg');
+            toastMsg.innerText = msg;
+            
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+
+        const tracks = [
+            {
+                title: "Cyberpunk Synthwave Mix 2026",
+                artist: "MIRVEL Collection • Lo-Fi Beats",
+                cover: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=200&auto=format&fit=crop&q=80"
+            },
+            {
+                title: "Night City Driving OST",
+                artist: "Retro Wave • Electronic Chill",
+                cover: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=200&auto=format&fit=crop&q=80"
+            }
+        ];
+
+        let isPlaying = true;
+        let isMuted = false;
+        let currentTrackIndex = 0;
+
+        function togglePlay() {
+            isPlaying = !isPlaying;
+            const playIcon = document.getElementById('playIcon');
+            const visualizer = document.getElementById('equalizerVisualizer');
+
+            if (isPlaying) {
+                playIcon.setAttribute('data-lucide', 'pause');
+                visualizer.classList.remove('paused');
+            } else {
+                playIcon.setAttribute('data-lucide', 'play');
+                visualizer.classList.add('paused');
+            }
+            lucide.createIcons();
+        }
+
+        function nextTrack() {
+            currentTrackIndex = (currentTrackIndex + 1) % tracks.length;
+            const track = tracks[currentTrackIndex];
+
+            document.getElementById('trackTitle').innerText = track.title;
+            document.getElementById('trackArtist').innerText = track.artist;
+            document.getElementById('trackCover').src = track.cover;
+
+            if (!isPlaying) togglePlay();
+            showToast(`Играет: ${track.title}`);
+        }
+
+        function toggleMute() {
+            isMuted = !isMuted;
+            const volumeIcon = document.getElementById('volumeIcon');
+
+            if (isMuted) {
+                volumeIcon.setAttribute('data-lucide', 'volume-x');
+                showToast('Звук выключен');
+            } else {
+                volumeIcon.setAttribute('data-lucide', 'volume-2');
+                showToast('Звук включен');
+            }
+            lucide.createIcons();
+        }
+
+        function seekTrack(e) {
+            const progress = document.getElementById('trackProgress');
+            const rect = e.currentTarget.getBoundingClientRect();
+            const clickPosition = (e.clientX - rect.left) / rect.width;
+            progress.style.width = `${Math.round(clickPosition * 100)}%`;
+            
+            const totalSeconds = 135;
+            const currentSec = Math.round(totalSeconds * clickPosition);
+            const mins = Math.floor(currentSec / 60);
+            const secs = currentSec % 60;
+            document.getElementById('currentTime').innerText = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+        }
+
+        function openAddModal() {
+            document.getElementById('addModal').classList.remove('hidden');
+        }
+        function closeAddModal() {
+            document.getElementById('addModal').classList.add('hidden');
+        }
+
+        function openAnonModal() {
+            document.getElementById('anonModal').classList.remove('hidden');
+        }
+        function closeAnonModal() {
+            document.getElementById('anonModal').classList.add('hidden');
+        }
+
+        function sendAnonMessage() {
+            const text = document.getElementById('anonText').value;
+            if (!text.trim()) {
+                showToast('Введите текст сообщения');
+                return;
+            }
+            // Direct redirect to Telegram with prefilled text
+            window.open(`https://t.me/share/url?url=${encodeURIComponent('Анонимное сообщение MIRVEL:')}&text=${encodeURIComponent(text)}`, '_blank');
+            closeAnonModal();
+            document.getElementById('anonText').value = '';
+            showToast('Переходим в Telegram...');
+        }
+
+        function openExportModal() {
+            document.getElementById('jsonOutput').value = JSON.stringify(collectionData, null, 2);
+            document.getElementById('exportModal').classList.remove('hidden');
+        }
+        function closeExportModal() {
+            document.getElementById('exportModal').classList.add('hidden');
+        }
+
+        function copyJsonCode() {
+            const jsonText = document.getElementById('jsonOutput');
+            jsonText.select();
+            document.execCommand('copy');
+            showToast('JSON скопирован в буфер обмена!');
+        }
+
+        // Initial render on load
+        window.onload = function() {
+            renderCollection();
+        };
+    </script>
 </body>
 </html>
-
